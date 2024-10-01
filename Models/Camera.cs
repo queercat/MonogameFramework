@@ -16,4 +16,9 @@ public class Camera(float rotation, float zoom, Vector2 position, Viewport viewp
         Matrix.CreateRotationZ(Rotation) *
         Matrix.CreateScale(Zoom) *
         Matrix.CreateTranslation(new Vector3(Viewport.Width * 0.5f, Viewport.Height * 0.5f, 0));
+    
+    public void Rotate(float rotation)
+    {
+        Rotation += rotation;
+    }
 }
