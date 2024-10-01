@@ -13,6 +13,7 @@ public class Sprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Sprite
     private Texture2D _texture = null!;
     private Vector2 _position = position;
     private float _rotation = rotation;
+    
     private readonly Vector2 _origin = spriteOptions.Origin;
     private readonly SpriteEffects _spriteEffects = spriteOptions.SpriteEffects;
     private readonly float _layerDepth = spriteOptions.LayerDepth;

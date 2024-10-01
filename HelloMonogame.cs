@@ -9,6 +9,7 @@ using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using IDrawable = HelloMonogame.Models.IDrawable;
 
 namespace HelloMonogame;
 
@@ -23,6 +24,7 @@ public class HelloMonogame : Game
     
     private readonly List<ILoadable> _loadables = [];
     private readonly List<IUpdatable> _updatables = [];
+    private readonly List<IDrawable> _drawables = [];
 
     public HelloMonogame()
     {
@@ -35,8 +37,14 @@ public class HelloMonogame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _spriteMap = new SpriteMap(this, _spriteBatch, "Automation", "SpriteMaps/Automation.png", 16, 16);
-        
+        _animatedSprite = new AnimatedSprite(this, _spriteBatch, Vector2.Zero, 1, 0, new DefaultSpriteOptions(),
+            new AnimatedSpriteOptions(_spriteMap, .1f, [200, 201, 202, 203, 204, 205, 206, 207], true), 1, 2);
+      
         _loadables.Add(_spriteMap);
+        
+        _loadables.Add(_animatedSprite);
+        _updatables.Add(_animatedSprite);
+        _drawables.Add(_animatedSprite);
         
         Camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
         
@@ -56,7 +64,7 @@ public class HelloMonogame : Game
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-        
+
         foreach (var updatable in _updatables)
         {
             updatable.Update(gameTime);
@@ -68,13 +76,13 @@ public class HelloMonogame : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        
+       
         _spriteBatch.Begin(transformMatrix: Camera.TransformMatrix, samplerState: SamplerState.PointClamp);
-        _spriteMap.DrawTile(80, Vector2.Zero, 0, 1, new DefaultSpriteOptions());
+        
+        _drawables.ForEach(drawable => drawable.Draw());
+        
         _spriteBatch.End();
         
-
-            
         base.Draw(gameTime);
     }
 }

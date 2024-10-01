@@ -6,18 +6,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HelloMonogame.Models;
 
-public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Vector2 position, float scale, float rotation, SpriteOptions spriteOptions, AnimatedSpriteOptions animatedSpriteOptions) : IDrawable, IUpdatable, ILoadable
+public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Vector2 position, float scale, float rotation, SpriteOptions spriteOptions, AnimatedSpriteOptions animatedSpriteOptions, int tilesWidth = 1, int tilesHeight = 1) : IDrawable, IUpdatable, ILoadable
 {
     private readonly SpriteMap _spriteMap = animatedSpriteOptions.SpriteMap;
     private float _elapsed = 0f;
     private int _frame = 0;
     private bool _playing = animatedSpriteOptions.Playing;
-    private readonly int _frames = animatedSpriteOptions.Frames;
+    private readonly int[] _frames = animatedSpriteOptions.FrameIds;
     private readonly float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
-    private int _id = animatedSpriteOptions.Id;
     private Vector2 _position = position;
     private float _rotation = rotation;
     private float _scale = scale;
+    
+    private int tilesWidth = tilesWidth;
+    private int tilesHeight = tilesHeight;
 
     public void Update(GameTime gameTime)
     {
@@ -30,7 +32,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _elapsed = 0;
         
         _frame++;
-        _frame %= _frames;
+        _frame %= _frames.Length;
+    }
+    
+    public void Translate(Vector2 translation)
+    {
+        _position += translation;
     }
     
     public void Play()
@@ -38,12 +45,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _playing = true;
     }
 
-    public new void Draw()
+    public void Draw()
     {
-        _spriteMap.DrawTile(_frame, _id, _position, _scale, _rotation, spriteOptions);
+        _spriteMap.DrawTile(_frames[_frame], _position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
     }
     
-    public new void Load()
+    public void Load()
     {
         _spriteMap.Load();
     }

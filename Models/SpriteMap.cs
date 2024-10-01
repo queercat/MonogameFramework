@@ -28,12 +28,17 @@ public class SpriteMap(
         return new Rectangle(x * _tileWidth, y * _tileHeight, _tileWidth, _tileHeight);
     }
     
-    public void DrawTile(int x, int y, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions)
+    public void DrawTile(int x, int y, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
     {
-        _spriteBatch.Draw(_texture, position, GetTile(x, y), Color.White, rotation, spriteOptions.Origin, scale, spriteOptions.SpriteEffects, spriteOptions.LayerDepth);
+        var sourceRectangle = GetTile(x, y);
+     
+        sourceRectangle.Width *= tilesWidth;
+        sourceRectangle.Height *= tilesHeight;
+        
+        _spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, rotation, spriteOptions.Origin, scale, spriteOptions.SpriteEffects, spriteOptions.LayerDepth);
     }
 
-    public void DrawTile(int id, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions)
+    public void DrawTile(int id, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
     {
         // ReSharper disable once PossibleLossOfFraction
         double rows = _texture.Height / _tileHeight;
@@ -46,7 +51,7 @@ public class SpriteMap(
         var x = id % (int)columns;
         var y = id / (int)columns;
         
-        DrawTile(x, y, position, rotation, scale, spriteOptions);
+        DrawTile(x, y, position, rotation, scale, spriteOptions, tilesWidth, tilesHeight);
     }
 
     private void LoadTexture()
