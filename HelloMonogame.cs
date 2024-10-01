@@ -20,6 +20,7 @@ public class HelloMonogame : Game
     private SpriteMap _spriteMap;
     private Sprite _sprite;
     private AnimatedSprite _animatedSprite;
+    private AnimatedSprite _character;
     private Camera Camera { get; set; }
     
     private readonly List<ILoadable> _loadables = [];
@@ -39,12 +40,19 @@ public class HelloMonogame : Game
         _spriteMap = new SpriteMap(this, _spriteBatch, "Automation", "SpriteMaps/Automation.png", 16, 16);
         _animatedSprite = new AnimatedSprite(this, _spriteBatch, Vector2.Zero, 1, 0, new DefaultSpriteOptions(),
             new AnimatedSpriteOptions(_spriteMap, .1f, [200, 201, 202, 203, 204, 205, 206, 207], true), 1, 2);
+        var characterSpriteMap = new SpriteMap(this, _spriteBatch, "Character", "SpriteMaps/Character.png", 16, 16);
+        _character = new AnimatedSprite(this, _spriteBatch, Vector2.One, 1, 0, new DefaultSpriteOptions(),
+            new AnimatedSpriteOptions(characterSpriteMap, .3f, [64, 66, 68, 70], true), 2, 4);
       
         _loadables.Add(_spriteMap);
-        
         _loadables.Add(_animatedSprite);
+        _loadables.Add(_character);
+        
         _updatables.Add(_animatedSprite);
+        _updatables.Add(_character);
+        
         _drawables.Add(_animatedSprite);
+        _drawables.Add(_character);
         
         Camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
         
