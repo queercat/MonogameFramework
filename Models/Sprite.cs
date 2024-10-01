@@ -1,30 +1,34 @@
+using System;
+using HelloMonogame.Models.Options;
+using HelloMonogame.Models.Options.SpriteOptions;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace HelloMonogame.Models;
 
-public class Sprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, string name, string path, Vector2 position, Vector2? velocity = null, Vector2? origin = null, SpriteEffects? spriteEffects = null, float rotation = 0f, float scale = 1f, float layerDepth = 0f) : ILoadable, IDrawable
+public class Sprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, SpriteOptions spriteOptions, string path, float rotation, Vector2 position)
+    : ILoadable, IDrawable
 {
-    private readonly HelloMonogame _helloMonogame = helloMonogame;
-    private readonly SpriteBatch _spriteBatch = spriteBatch;
-    private readonly string _path = path;
-    private Texture2D _texture;
+    private Texture2D _texture = null!;
     private Vector2 _position = position;
     private float _rotation = rotation;
-    private Vector2 _velocity = velocity ?? new Vector2(0, 0);
-    private Vector2 _origin = origin ?? new Vector2(0, 0);
-    private SpriteEffects _spriteEffects = spriteEffects ?? SpriteEffects.None;
-    private float _layerDepth = layerDepth;
-    
+    private readonly Vector2 _origin = spriteOptions.Origin;
+    private readonly SpriteEffects _spriteEffects = spriteOptions.SpriteEffects;
+    private readonly float _layerDepth = spriteOptions.LayerDepth;
+    private readonly string _path = path;
+    private readonly float _scale = spriteOptions.Scale;
+
     public void Load()
     {
-        _texture = TextureLoader.LoadTexture(_helloMonogame.GraphicsDevice, _path);
+        _texture = TextureLoader.LoadTexture(helloMonogame.GraphicsDevice, _path);
     }
 
     public void Draw()
     {
-        _spriteBatch.Draw(_texture, _position, null, Color.White, _rotation, _origin, scale, _spriteEffects, _layerDepth);
+        if (_texture == null) throw new NullReferenceException("Texture is null");
+        
+        spriteBatch.Draw(_texture, _position, null, Color.White, _rotation, _origin, _scale, _spriteEffects, _layerDepth);
     }
     
     public void Rotate(float rotation)

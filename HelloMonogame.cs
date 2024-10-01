@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HelloMonogame.Models;
+using HelloMonogame.Models.Options;
+using HelloMonogame.Models.Options.SpriteOptions;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,16 +33,10 @@ public class HelloMonogame : Game
 
     protected override void Initialize()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice); 
-        _spriteMap = new SpriteMap(this, _spriteBatch, "Grass", "SpriteMaps/Grass.png", 16, 16);
-        _sprite = new Sprite(this, _spriteBatch,  "egg", "Sprites/Egg.png", new Vector2(0, 0));
-        _animatedSprite = new AnimatedSprite(this, _spriteBatch, "Grass", "SpriteMaps/Grass.png", 16, 16, 4, new Vector2(0, 0), playing: true);
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        _spriteMap = new SpriteMap(this, _spriteBatch, "Automation", "SpriteMaps/Automation.png", 16, 16);
         
         _loadables.Add(_spriteMap);
-        _loadables.Add(_sprite);
-        _loadables.Add(_animatedSprite);
-        
-        _updatables.Add(_animatedSprite);
         
         Camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
         
@@ -73,11 +69,8 @@ public class HelloMonogame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         
-        // draw texture
         _spriteBatch.Begin(transformMatrix: Camera.TransformMatrix, samplerState: SamplerState.PointClamp);
-        // _spriteMap.DrawTile(1, 1, new Vector2(0, 0));
-        // _sprite.Draw();
-        _animatedSprite.Draw();
+        _spriteMap.DrawTile(80, Vector2.Zero, 0, 1, new DefaultSpriteOptions());
         _spriteBatch.End();
         
 

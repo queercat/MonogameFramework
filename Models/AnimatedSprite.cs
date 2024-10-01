@@ -1,15 +1,23 @@
 using System;
+using HelloMonogame.Models.Options;
+using HelloMonogame.Models.Options.SpriteOptions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace HelloMonogame.Models;
 
-public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, string name, string path, int tileWidth, int tileHeight, int frames, Vector2 position, Vector2? velocity = null, Vector2? origin = null, SpriteEffects? spriteEffects = null, float rotation = 0, float scale = 1, float layerDepth = 0, bool playing = false, float secondsPerFrame = 1f) : Sprite(helloMonogame, spriteBatch, name, path, position, velocity, origin, spriteEffects, rotation, scale, layerDepth), ILoadable, IDrawable, IUpdatable
+public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Vector2 position, float scale, float rotation, SpriteOptions spriteOptions, AnimatedSpriteOptions animatedSpriteOptions) : IDrawable, IUpdatable, ILoadable
 {
-    private readonly SpriteMap _spriteMap = new SpriteMap(helloMonogame, spriteBatch, name, path, tileWidth, tileHeight);
+    private readonly SpriteMap _spriteMap = animatedSpriteOptions.SpriteMap;
     private float _elapsed = 0f;
     private int _frame = 0;
-    private bool _playing = playing;
+    private bool _playing = animatedSpriteOptions.Playing;
+    private readonly int _frames = animatedSpriteOptions.Frames;
+    private readonly float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
+    private int _id = animatedSpriteOptions.Id;
+    private Vector2 _position = position;
+    private float _rotation = rotation;
+    private float _scale = scale;
 
     public void Update(GameTime gameTime)
     {
@@ -17,12 +25,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         
         _elapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        if (!(_elapsed > secondsPerFrame)) return;
+        if (!(_elapsed > _secondsPerFrame)) return;
         
         _elapsed = 0;
         
         _frame++;
-        _frame %= frames;
+        _frame %= _frames;
     }
     
     public void Play()
@@ -32,7 +40,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
 
     public new void Draw()
     {
-        _spriteMap.DrawTile(_frame, 0, position);
+        _spriteMap.DrawTile(_frame, _id, _position, _scale, _rotation, spriteOptions);
     }
     
     public new void Load()
