@@ -16,5 +16,6 @@ public class InputSystem : System
         messages[MessageType.InputLeft] = Keyboard.GetState().IsKeyDown(Keys.A);
         messages[MessageType.InputDown] = Keyboard.GetState().IsKeyDown(Keys.S);
         messages[MessageType.InputRight] = Keyboard.GetState().IsKeyDown(Keys.D);
+        messages[MessageType.MousePosition] = Mouse.GetState().Position;
     }
 }

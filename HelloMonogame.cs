@@ -49,6 +49,7 @@ public class HelloMonogame : Game
 
         var systemEntity = new Entity();
         systemEntity.AddUpdatable(new InputSystem());
+        systemEntity.AddUpdatable(new DebugSystem());
         
         _entities.Add(systemEntity);
        

@@ -14,7 +14,7 @@ public abstract class System : IUpdatable
     {
         foreach (var message in messages)
             if (_listens.TryGetValue(message.Key, out var value))
-                value.DynamicInvoke(message.Key, message);
+                value.DynamicInvoke(message.Key, message.Value);
     }
 
     protected void Register(MessageType messageType, Delegate function)
