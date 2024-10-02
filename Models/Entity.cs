@@ -26,6 +26,16 @@ public class Entity : ILoadable, IDrawable, IUpdatable
         _drawables.Add(drawable);
     }
     
+    public void Add(object obj)
+    {
+        if (obj is IUpdatable updatable)
+            AddUpdatable(updatable);
+        if (obj is ILoadable loadable)
+            AddLoadable(loadable);
+        if (obj is IDrawable drawable)
+            AddDrawable(drawable);
+    }
+    
     public void Load()
     {
         foreach (var loadable in _loadables)

@@ -5,6 +5,7 @@ using System.Linq;
 using HelloMonogame.Enums;
 using HelloMonogame.Models;
 using HelloMonogame.Models.Contracts;
+using HelloMonogame.Models.Entities;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
@@ -18,8 +19,6 @@ public class HelloMonogame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private SpriteMap _spriteMap;
-    private AnimatedSprite _character;
     private Camera _camera { get; set; }
     
     private readonly List<ILoadable> _loadables = [];
@@ -40,35 +39,19 @@ public class HelloMonogame : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
         _camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
-
-        _spriteMap = new SpriteMap(this, _spriteBatch, "Selector", "Sprites/Selector.png", 32, 32);
-        _character = new AnimatedSprite(this, _spriteBatch, "Animations/Selector",
-            new DefaultAnimatedSpriteOptions(_spriteMap));
-
+        
         var systemEntity = new Entity();
         systemEntity.AddUpdatable(new InputSystem());
         systemEntity.AddUpdatable(new DebugSystem());
         
         _entities.Add(systemEntity);
+        _entities.Add(new Character(this, _spriteBatch));
        
-        /* -- Loadables -- */
-        _loadables.Add(_spriteMap);
-        _loadables.Add(_character);
-        
-        /* -- Drawables -- */
-        _drawables.Add(_character);
-        
-        /* -- Updatables -- */
-        _updatables.Add(_character);
-        
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-        foreach (var loadable in _loadables)
-            loadable.Load();
-        
         foreach (var entity in _entities)
             entity.Load();
     }
@@ -85,25 +68,6 @@ public class HelloMonogame : Game
         foreach (var entity in _entities)
             entity.Update(gameTime, _messages);
 
-        if ((bool)_messages[MessageType.InputRight])
-        {
-            _character.Unflip();
-            _character.Play("WalkRight");
-        }
-        
-        if ((bool)_messages[MessageType.InputLeft])
-        {
-            _character.Flip();
-            _character.Play("WalkRight");
-        }
-
-        if ((bool)_messages[MessageType.InputUp])
-            _character.Play("WalkUp");
-        
-        if ((bool)_messages[MessageType.InputDown])
-            _character.Play("WalkDown");
-
-
         base.Update(gameTime);
     }
 
@@ -113,7 +77,6 @@ public class HelloMonogame : Game
        
         _spriteBatch.Begin(transformMatrix: _camera.TransformMatrix, samplerState: SamplerState.PointClamp);
         
-        _drawables.ForEach(drawable => drawable.Draw());
         _entities.ForEach(entity => entity.Draw());
         
         _spriteBatch.End();

@@ -9,14 +9,12 @@ namespace HelloMonogame.Models;
 public class SpriteMap(
     HelloMonogame helloMonoGame,
     SpriteBatch spriteBatch,
-    string name,
     string path,
     int tileWidth,
     int tileHeight)
     : ILoadable
 {
     private string _path { get; } = path;
-    public string _name { get; } = name;
     private HelloMonogame _helloMonoGame { get; set; } = helloMonoGame;
     private SpriteBatch _spriteBatch { get; set; } = spriteBatch;
     private Texture2D _texture { get; set; } = null!;
