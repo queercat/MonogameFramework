@@ -18,7 +18,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private int _frame = 0;
     private bool _playing = animatedSpriteOptions.Playing;
     private Dictionary<string, AnimationConfig> _animations = animatedSpriteOptions.Animations;
-    private readonly float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
+    private float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
     private Vector2 _position = position;
     private string _animationName = "";
     private float _rotation = rotation;
@@ -74,6 +74,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _frame = 0;
         _animationName = animationName;
         _playing = true;
+        _secondsPerFrame = _animations[_animationName].SecondsPerFrame ?? 1.0f;
     }
 
     public void Flip()
