@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace HelloMonogame.Models;
 
-public class Tile : IDrawable
+public class Tile : IDrawable, ILoadable
 {
     public Vector2 Position { get; set; }
     public int Depth { get; set; }
@@ -20,5 +20,10 @@ public class Tile : IDrawable
     public virtual void Draw()
     {
         _animatedSprite.Draw(Position);
+    }
+    
+    public virtual void Load()
+    {
+        _animatedSprite.Load();
     }
 }

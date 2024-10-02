@@ -4,6 +4,7 @@ using HelloMonogame.Enums;
 using HelloMonogame.Models;
 using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Entities;
+using HelloMonogame.Models.Options;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,7 @@ public class HelloMonogame : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Camera _camera { get; set; }
+    private TileMap _tileMap { get; set; } = new();
     
     private readonly List<ILoadable> _loadables = [];
     private readonly List<IUpdateable> _updatables = [];
@@ -41,10 +43,23 @@ public class HelloMonogame : Game
         var systemEntity = new Entity();
         systemEntity.AddUpdatable(new InputSystem());
         systemEntity.AddUpdatable(new DebugSystem());
-        
+
+        var sprite = new SpriteMap(this, _spriteBatch, "Sprites/Selector.png", 32, 32);
+
+        for (var i = 0; i < 16; i++)
+        {
+            for (var j = 0; j < 16; j++)
+            {
+                var animatedSprite = new AnimatedSprite(this, _spriteBatch, "Animations/Selector",
+                    new DefaultAnimatedSpriteOptions(sprite));
+                var tile = new Tile(new Vector2(i * 32, j * 32), animatedSprite);
+                _tileMap.Add(new Vector2(i, j), tile);
+            }
+        }
+
         _entities.Add(systemEntity);
         _entities.Add(new Character(this, _spriteBatch));
-       
+        
         base.Initialize();
     }
 
@@ -52,6 +67,8 @@ public class HelloMonogame : Game
     {
         foreach (var entity in _entities)
             entity.Load();
+        
+        _tileMap.Load();
     }
 
     protected override void Update(GameTime gameTime)
@@ -78,6 +95,7 @@ public class HelloMonogame : Game
         _spriteBatch.Begin(transformMatrix: _camera.TransformMatrix, samplerState: SamplerState.PointClamp);
         
         _entities.ForEach(entity => entity.Draw());
+        _tileMap.Draw();
         
         _spriteBatch.End();
         
