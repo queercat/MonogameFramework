@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using IDrawable = HelloMonogame.Models.IDrawable;
+using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
 namespace HelloMonogame;
 
@@ -19,7 +20,7 @@ public class HelloMonogame : Game
     private Camera _camera { get; set; }
     
     private readonly List<ILoadable> _loadables = [];
-    private readonly List<IUpdatable> _updatables = [];
+    private readonly List<IUpdateable> _updatables = [];
     private readonly List<IDrawable> _drawables = [];
     private readonly List<Entity> _entities = [];
     private Dictionary<MessageType, object> _messages = new();

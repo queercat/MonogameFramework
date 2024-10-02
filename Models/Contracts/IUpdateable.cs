@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace HelloMonogame.Models.Contracts;
 
-public interface IUpdatable
+public interface IUpdateable
 {
     void Update(GameTime gameTime, Dictionary<MessageType, object> messages);
 }

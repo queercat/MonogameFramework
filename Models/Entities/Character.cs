@@ -38,7 +38,12 @@ public class Character : Entity
             velocity.Normalize();
         
         Position += velocity * 2;
+    }
+    
+    public override void Draw()
+    {
+        base.Draw();
         
-        _animatedSprite.Position = Position;
+        _animatedSprite.Draw(Position);
     }
 }

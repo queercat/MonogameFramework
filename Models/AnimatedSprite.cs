@@ -9,13 +9,12 @@ using HelloMonogame.Models.Options;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using YamlDotNet.Serialization;
+using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
 namespace HelloMonogame.Models;
 
-public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Vector2 position, float scale, float rotation, SpriteOptions spriteOptions, AnimatedSpriteOptions animatedSpriteOptions, int tilesWidth = 1, int tilesHeight = 1) : IDrawable, IUpdatable, ILoadable
+public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, float scale, float rotation, SpriteOptions spriteOptions, AnimatedSpriteOptions animatedSpriteOptions, int tilesWidth = 1, int tilesHeight = 1) : IUpdateable, ILoadable
 {
-    public Vector2 Position = position;
-    
     private readonly SpriteMap _spriteMap = animatedSpriteOptions.SpriteMap;
     private float _elapsed = 0f;
     private int _frame = 0;
@@ -29,7 +28,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private int tilesWidth = tilesWidth;
     private int tilesHeight = tilesHeight;
 
-    public AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, string animationConfigPath, DefaultAnimatedSpriteOptions animatedSpriteOptions) : this(helloMonogame, spriteBatch, Vector2.Zero, 1, 0, new DefaultSpriteOptions(), animatedSpriteOptions)
+    public AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, string animationConfigPath, DefaultAnimatedSpriteOptions animatedSpriteOptions) : this(helloMonogame, spriteBatch, 1, 0, new DefaultSpriteOptions(), animatedSpriteOptions)
     {
         RegisterAnimations(Path.Join("Content", animationConfigPath) + ".yaml");
     }
@@ -66,11 +65,6 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         
     }
     
-    public void Translate(Vector2 translation)
-    {
-        Position += translation;
-    }
-    
     public void Play(string animationName)
     {
         if (animationName == _animationName) return;
@@ -101,7 +95,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _playing = false;
     }
 
-    public void Draw()
+    public void Draw(Vector2 position)
     {
         _animations.TryGetValue(_animationName, out var frames);
         
@@ -110,7 +104,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         var animationConfig = _animations[_animationName];
         var frame = animationConfig.InitialFrame + _frame;
         
-        _spriteMap.DrawTile(frame, Position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
+        _spriteMap.DrawTile(frame, position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
     }
     
     public void Load()

@@ -2,20 +2,21 @@ using System.Collections.Generic;
 using HelloMonogame.Enums;
 using HelloMonogame.Models.Contracts;
 using Microsoft.Xna.Framework;
+using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
 namespace HelloMonogame.Models;
 
-public class Entity : ILoadable, IDrawable, IUpdatable
+public class Entity : ILoadable, IDrawable, IUpdateable
 {
     public Vector2 Position { get; set; }
-    
-    public readonly List<IDrawable> _drawables = [];
-    public readonly List<IUpdatable> _updatables = [];
-    public readonly List<ILoadable> _loadables = [];
 
-    public void AddUpdatable(IUpdatable updatable)
+    private readonly List<IDrawable> _drawables = [];
+    private readonly List<IUpdateable> _updatables = [];
+    private readonly List<ILoadable> _loadables = [];
+
+    public void AddUpdatable(IUpdateable updateable)
     {
-        _updatables.Add(updatable);
+        _updatables.Add(updateable);
     }
     
     public void AddLoadable(ILoadable loadable)
@@ -30,7 +31,7 @@ public class Entity : ILoadable, IDrawable, IUpdatable
     
     public void Add(object obj)
     {
-        if (obj is IUpdatable updatable)
+        if (obj is IUpdateable updatable)
             AddUpdatable(updatable);
         if (obj is ILoadable loadable)
             AddLoadable(loadable);
@@ -38,7 +39,7 @@ public class Entity : ILoadable, IDrawable, IUpdatable
             AddDrawable(drawable);
     }
     
-    public void Load()
+    public virtual void Load()
     {
         foreach (var loadable in _loadables)
         {
@@ -46,7 +47,7 @@ public class Entity : ILoadable, IDrawable, IUpdatable
         }
     }
 
-    public void Draw()
+    public virtual void Draw()
     {
         foreach (var drawable in _drawables)
         {
