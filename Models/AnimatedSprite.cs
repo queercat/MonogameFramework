@@ -24,9 +24,11 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private string _animationName = "";
     private float _rotation = rotation;
     private float _scale = scale;
+    public float Depth = spriteOptions.LayerDepth;
     
     private int tilesWidth = tilesWidth;
     private int tilesHeight = tilesHeight;
+    private SpriteOptions _spriteOptions = spriteOptions;
 
     public AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, string animationConfigPath, DefaultAnimatedSpriteOptions animatedSpriteOptions) : this(helloMonogame, spriteBatch, 1, 0, new DefaultSpriteOptions(), animatedSpriteOptions)
     {
@@ -77,12 +79,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
 
     public void Flip()
     {
-        spriteOptions = spriteOptions with { SpriteEffects = SpriteEffects.FlipHorizontally };
+        _spriteOptions = _spriteOptions with { SpriteEffects = SpriteEffects.FlipHorizontally };
     }
     
     public void Unflip()
     {
-        spriteOptions = spriteOptions with { SpriteEffects = SpriteEffects.None };
+        _spriteOptions = _spriteOptions with { SpriteEffects = SpriteEffects.None };
     }
     
     public void Play()
@@ -104,7 +106,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         var animationConfig = _animations[_animationName];
         var frame = animationConfig.InitialFrame + _frame;
         
-        _spriteMap.DrawTile(frame, position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
+        if (Math.Abs(_spriteOptions.LayerDepth - Depth) > 0)
+        {
+            _spriteOptions = _spriteOptions with { LayerDepth = Depth };
+        }
+        
+        _spriteMap.DrawTile(frame, position, _rotation, _scale, _spriteOptions, tilesWidth, tilesHeight);
     }
     
     public void Load()
