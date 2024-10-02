@@ -18,8 +18,6 @@ public class HelloMonogame : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SpriteMap _spriteMap;
-    private Sprite _sprite;
-    private AnimatedSprite _animatedSprite;
     private AnimatedSprite _character;
     private Camera Camera { get; set; }
     
@@ -37,24 +35,28 @@ public class HelloMonogame : Game
     protected override void Initialize()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        _spriteMap = new SpriteMap(this, _spriteBatch, "Automation", "SpriteMaps/Automation.png", 16, 16);
-        _animatedSprite = new AnimatedSprite(this, _spriteBatch, Vector2.Zero, 1, 0, new DefaultSpriteOptions(),
-            new AnimatedSpriteOptions(_spriteMap, .1f, [200, 201, 202, 203, 204, 205, 206, 207], true), 1, 2);
-        var characterSpriteMap = new SpriteMap(this, _spriteBatch, "Character", "SpriteMaps/Character.png", 16, 16);
-        _character = new AnimatedSprite(this, _spriteBatch, Vector2.One, 1, 0, new DefaultSpriteOptions(),
-            new AnimatedSpriteOptions(characterSpriteMap, .3f, [64, 66, 68, 70], true), 2, 4);
-      
-        _loadables.Add(_spriteMap);
-        _loadables.Add(_animatedSprite);
-        _loadables.Add(_character);
-        
-        _updatables.Add(_animatedSprite);
-        _updatables.Add(_character);
-        
-        _drawables.Add(_animatedSprite);
-        _drawables.Add(_character);
         
         Camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
+
+        _spriteMap = new SpriteMap(this, _spriteBatch, "Character", "SpriteSheets/Character.png", 32, 32);
+        _character = new AnimatedSprite(this, _spriteBatch, Vector2.Zero, 1, 0, new DefaultSpriteOptions(),
+            new AnimatedSpriteOptions(_spriteMap, .2f, false, new Dictionary<string, int[]>()), 1, 1);
+       
+        _character.AddAnimation("WalkRight", 16, 4);
+        _character.AddAnimation("WalkDown", 12, 4);
+        _character.AddAnimation("WalkUp", 20, 4);
+        
+        _character.Play("WalkUp");
+       
+        /* -- Loadables -- */
+        _loadables.Add(_spriteMap);
+        _loadables.Add(_character);
+        
+        /* -- Drawables -- */
+        _drawables.Add(_character);
+        
+        /* -- Updatables -- */
+        _updatables.Add(_character);
         
         base.Initialize();
     }

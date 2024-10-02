@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Models.Options.SpriteOptions;
 using Microsoft.Xna.Framework;
@@ -12,9 +14,10 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private float _elapsed = 0f;
     private int _frame = 0;
     private bool _playing = animatedSpriteOptions.Playing;
-    private readonly int[] _frames = animatedSpriteOptions.FrameIds;
+    private Dictionary<string, int[]> _animations = animatedSpriteOptions.Animations;
     private readonly float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
     private Vector2 _position = position;
+    private string _animationName = "";
     private float _rotation = rotation;
     private float _scale = scale;
     
@@ -32,12 +35,45 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _elapsed = 0;
         
         _frame++;
-        _frame %= _frames.Length;
+        _frame %= _animations[_animationName].Length;
     }
     
     public void Translate(Vector2 translation)
     {
         _position += translation;
+    }
+
+    public void AddAnimation(string animationName, int[] frames)
+    {
+        _animations[animationName] = frames;
+    }
+
+    public void AddAnimation(string animationName, int initialFrame, int numberOfFrames)
+    {
+        var frames = new int[numberOfFrames];
+        
+        for (var idx = 0; idx < numberOfFrames; idx++)
+        {
+            frames[idx] = initialFrame + idx;
+        }
+
+        _animations[animationName] = frames;
+    }
+    
+    public void Play(string animationName)
+    {
+        _animationName = animationName;
+        _playing = true;
+    }
+
+    public void Flip()
+    {
+        spriteOptions = spriteOptions with { SpriteEffects = SpriteEffects.FlipHorizontally };
+    }
+    
+    public void Unflip()
+    {
+        spriteOptions = spriteOptions with { SpriteEffects = SpriteEffects.None };
     }
     
     public void Play()
@@ -45,9 +81,18 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _playing = true;
     }
 
+    public void Stop()
+    {
+        _playing = false;
+    }
+
     public void Draw()
     {
-        _spriteMap.DrawTile(_frames[_frame], _position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
+        _animations.TryGetValue(_animationName, out var frames);
+        
+        if (frames is null) throw new NullReferenceException($"Animation {_animationName} doesn't exist!");
+        
+        _spriteMap.DrawTile(frames[_frame], _position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
     }
     
     public void Load()

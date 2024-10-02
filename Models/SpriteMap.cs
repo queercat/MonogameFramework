@@ -27,15 +27,18 @@ public class SpriteMap(
     {
         return new Rectangle(x * _tileWidth, y * _tileHeight, _tileWidth, _tileHeight);
     }
-    
-    public void DrawTile(int x, int y, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
+
+    private void DrawTile(int x, int y, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
     {
         var sourceRectangle = GetTile(x, y);
      
         sourceRectangle.Width *= tilesWidth;
         sourceRectangle.Height *= tilesHeight;
+
+        // TODO: Make this a mapping of percentages from spriteOptions.
+        var origin = sourceRectangle.Size.ToVector2() / 2;
         
-        _spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, rotation, spriteOptions.Origin, scale, spriteOptions.SpriteEffects, spriteOptions.LayerDepth);
+        _spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, rotation, origin, scale, spriteOptions.SpriteEffects, spriteOptions.LayerDepth);
     }
 
     public void DrawTile(int id, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
