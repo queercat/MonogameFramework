@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HelloMonogame.Models.Configs;
 
 namespace HelloMonogame.Models.Options;
 

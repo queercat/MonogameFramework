@@ -1,4 +1,4 @@
-namespace HelloMonogame.Models;
+namespace HelloMonogame.Models.Configs;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class AnimationConfig

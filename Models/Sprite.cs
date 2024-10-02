@@ -1,6 +1,5 @@
 using System;
 using HelloMonogame.Models.Options;
-using HelloMonogame.Models.Options.SpriteOptions;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

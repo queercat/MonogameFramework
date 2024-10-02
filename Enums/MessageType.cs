@@ -1,4 +1,4 @@
-namespace HelloMonogame.Models;
+namespace HelloMonogame.Enums;
 
 public enum MessageType
 {

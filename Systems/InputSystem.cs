@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HelloMonogame.Enums;
 using HelloMonogame.Models;
 using HelloMonogame.Models.Contracts;
 using Microsoft.Xna.Framework;

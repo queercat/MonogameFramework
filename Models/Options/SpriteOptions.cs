@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HelloMonogame.Models.Options.SpriteOptions;
+namespace HelloMonogame.Models.Options;
 
 public record SpriteOptions(
     Vector2 Origin,
