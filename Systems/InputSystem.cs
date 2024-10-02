@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace HelloMonogame.Systems;
 
-public class InputSystem : IUpdatable
+public class InputSystem : System
 {
-    public void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
+    public override void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
     {
         messages[MessageType.InputUp] = Keyboard.GetState().IsKeyDown(Keys.W);
         messages[MessageType.InputLeft] = Keyboard.GetState().IsKeyDown(Keys.A);
