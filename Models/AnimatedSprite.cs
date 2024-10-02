@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Models.Options.SpriteOptions;
 using Microsoft.Xna.Framework;
@@ -24,7 +25,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private int tilesWidth = tilesWidth;
     private int tilesHeight = tilesHeight;
 
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
     {
         if (!_playing) return;
         
