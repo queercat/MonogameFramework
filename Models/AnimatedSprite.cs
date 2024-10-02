@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Models.Options.SpriteOptions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using YamlDotNet.Serialization;
 
 namespace HelloMonogame.Models;
 
@@ -25,6 +27,11 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private int tilesWidth = tilesWidth;
     private int tilesHeight = tilesHeight;
 
+    public AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, string animationConfigPath, DefaultAnimatedSpriteOptions animatedSpriteOptions) : this(helloMonogame, spriteBatch, Vector2.Zero, 1, 0, new DefaultSpriteOptions(), animatedSpriteOptions)
+    {
+        RegisterAnimations(Path.Join("Content", animationConfigPath) + ".yaml");
+    }
+
     public void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
     {
         if (!_playing) return;
@@ -37,6 +44,27 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         
         _frame++;
         _frame %= _animations[_animationName].Length;
+    }
+
+    private void RegisterAnimations(string path)
+    {
+        var deserializer = new DeserializerBuilder().Build();
+        var text = File.ReadAllText(path);
+
+        foreach (var file in text.Split("---"))
+        {
+            if (file == "") continue;
+            
+            var animation = deserializer.Deserialize<AnimationConfig>(file);
+
+            var frames = new int[animation.FrameCount];
+
+            for (var idx = 0; idx < animation.FrameCount; idx++)
+                frames[idx] = animation.InitialFrame + idx;
+            
+            _animations[animation.Name] = frames;
+        }
+        
     }
     
     public void Translate(Vector2 translation)

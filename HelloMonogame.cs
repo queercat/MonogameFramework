@@ -42,13 +42,9 @@ public class HelloMonogame : Game
         _camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
 
         _spriteMap = new SpriteMap(this, _spriteBatch, "Character", "SpriteSheets/Character.png", 32, 32);
-        _character = new AnimatedSprite(this, _spriteBatch, Vector2.Zero, 1, 0, new DefaultSpriteOptions(),
-            new AnimatedSpriteOptions(_spriteMap, .2f, false, new Dictionary<string, int[]>()), 1, 1);
+        _character = new AnimatedSprite(this, _spriteBatch, "Animations/Character",
+            new DefaultAnimatedSpriteOptions(_spriteMap));
        
-        _character.AddAnimation("WalkRight", 16, 4);
-        _character.AddAnimation("WalkDown", 12, 4);
-        _character.AddAnimation("WalkUp", 20, 4);
-        
         _character.Play("WalkUp");
 
         var systemEntity = new Entity();
@@ -90,9 +86,15 @@ public class HelloMonogame : Game
         foreach (var entity in _entities)
             entity.Update(gameTime, _messages);
 
-        if ((bool)_messages[MessageType.InputDown])
+        if ((bool)_messages[MessageType.InputRight])
         {
             _character.Unflip();
+            _character.Play("WalkRight");
+        }
+        
+        if ((bool)_messages[MessageType.InputLeft])
+        {
+            _character.Flip();
             _character.Play("WalkRight");
         }
 
@@ -102,11 +104,6 @@ public class HelloMonogame : Game
         if ((bool)_messages[MessageType.InputDown])
             _character.Play("WalkDown");
 
-        if ((bool)_messages[MessageType.InputRight])
-        {
-            _character.Flip();
-            _character.Play("WalkRight");
-        }
 
         base.Update(gameTime);
     }
