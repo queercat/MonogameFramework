@@ -6,7 +6,7 @@ namespace HelloMonogame.Models;
 public class Camera(float rotation, float zoom, Vector2 position, Viewport viewport)
 {
     private Viewport Viewport { get; set; } = viewport;
-    private Vector2 Position { get; set; } = position;
+    public Vector2 Position { get; set; } = position;
 
     private float Zoom { get; set; } = zoom;
     private float Rotation { get; set; } = rotation;

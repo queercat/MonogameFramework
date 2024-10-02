@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HelloMonogame.Enums;
 using HelloMonogame.Models;
 using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Entities;
-using HelloMonogame.Models.Options;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,7 +53,6 @@ public class HelloMonogame : Game
             entity.Load();
     }
 
-
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -68,6 +64,9 @@ public class HelloMonogame : Game
         foreach (var entity in _entities)
             entity.Update(gameTime, _messages);
 
+        var player = _entities.First(entity => entity is Character);
+        _camera.Position = Vector2.Lerp(_camera.Position, player.Position, 0.05f);
+        
         base.Update(gameTime);
     }
 

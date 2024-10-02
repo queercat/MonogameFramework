@@ -7,6 +7,8 @@ namespace HelloMonogame.Models;
 
 public class Entity : ILoadable, IDrawable, IUpdatable
 {
+    public Vector2 Position { get; set; }
+    
     public readonly List<IDrawable> _drawables = [];
     public readonly List<IUpdatable> _updatables = [];
     public readonly List<ILoadable> _loadables = [];
@@ -52,7 +54,7 @@ public class Entity : ILoadable, IDrawable, IUpdatable
         }
     }
 
-    public void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
+    public virtual void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
     {
         foreach (var updatable in _updatables)
         {

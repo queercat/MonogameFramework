@@ -14,13 +14,14 @@ namespace HelloMonogame.Models;
 
 public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Vector2 position, float scale, float rotation, SpriteOptions spriteOptions, AnimatedSpriteOptions animatedSpriteOptions, int tilesWidth = 1, int tilesHeight = 1) : IDrawable, IUpdatable, ILoadable
 {
+    public Vector2 Position = position;
+    
     private readonly SpriteMap _spriteMap = animatedSpriteOptions.SpriteMap;
     private float _elapsed = 0f;
     private int _frame = 0;
     private bool _playing = animatedSpriteOptions.Playing;
     private Dictionary<string, AnimationConfig> _animations = animatedSpriteOptions.Animations;
     private float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
-    private Vector2 _position = position;
     private string _animationName = "";
     private float _rotation = rotation;
     private float _scale = scale;
@@ -67,7 +68,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     
     public void Translate(Vector2 translation)
     {
-        _position += translation;
+        Position += translation;
     }
     
     public void Play(string animationName)
@@ -109,7 +110,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         var animationConfig = _animations[_animationName];
         var frame = animationConfig.InitialFrame + _frame;
         
-        _spriteMap.DrawTile(frame, _position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
+        _spriteMap.DrawTile(frame, Position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
     }
     
     public void Load()
