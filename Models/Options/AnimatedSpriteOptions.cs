@@ -11,5 +11,5 @@ public record AnimatedSpriteOptions(
 );
 
 public record DefaultAnimatedSpriteOptions(SpriteMap SpriteMap) : AnimatedSpriteOptions(
-    SpriteMap, 1.0f, true, new()
+    SpriteMap, 1.0f, false, new()
 );

@@ -57,6 +57,8 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
             if (file == "") continue;
             
             var animationConfig = deserializer.Deserialize<AnimationConfig>(file);
+
+            if (_animationName == "") _animationName = animationConfig.Name;
             
             _animations[animationConfig.Name] = animationConfig;
         }

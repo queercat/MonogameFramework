@@ -41,11 +41,9 @@ public class HelloMonogame : Game
         
         _camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
 
-        _spriteMap = new SpriteMap(this, _spriteBatch, "Character", "SpriteSheets/Character.png", 32, 32);
-        _character = new AnimatedSprite(this, _spriteBatch, "Animations/Character",
+        _spriteMap = new SpriteMap(this, _spriteBatch, "Selector", "Sprites/Selector.png", 32, 32);
+        _character = new AnimatedSprite(this, _spriteBatch, "Animations/Selector",
             new DefaultAnimatedSpriteOptions(_spriteMap));
-       
-        _character.Play("WalkUp");
 
         var systemEntity = new Entity();
         systemEntity.AddUpdatable(new InputSystem());
