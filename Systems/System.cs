@@ -17,7 +17,7 @@ public abstract class System : IUpdatable
                 value.DynamicInvoke(message.Key, message);
     }
 
-    public void Register(MessageType messageType, Delegate function)
+    protected void Register(MessageType messageType, Delegate function)
     {
         _listens[messageType] = function;
     }
