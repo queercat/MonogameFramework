@@ -1,15 +1,15 @@
 ---
-Name: "WalkDown"
+Name: WalkDown
 InitialFrame: 12
 FrameCount: 4
 SecondsPerFrame: .4
 ---
-Name: "WalkRight"
+Name: WalkRight
 InitialFrame: 16
 FrameCount: 4
 SecondsPerFrame: .4
 ---
-Name: "WalkUp"
+Name: WalkUp
 InitialFrame: 20
 FrameCount: 4
 SecondsPerFrame: .4

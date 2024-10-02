@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using HelloMonogame.Enums;
 using HelloMonogame.Models;
@@ -46,19 +47,10 @@ public class HelloMonogame : Game
 
         var sprite = new SpriteMap(this, _spriteBatch, "Sprites/Selector.png", 32, 32);
 
-        for (var i = 0; i < 16; i++)
-        {
-            for (var j = 0; j < 16; j++)
-            {
-                var animatedSprite = new AnimatedSprite(this, _spriteBatch, "Animations/Selector",
-                    new DefaultAnimatedSpriteOptions(sprite));
-                var tile = new Tile(new Vector2(i * 32, j * 32), animatedSprite);
-                _tileMap.Add(new Vector2(i, j), tile);
-            }
-        }
 
         _entities.Add(systemEntity);
         _entities.Add(new Character(this, _spriteBatch));
+        
         
         base.Initialize();
     }
@@ -82,8 +74,18 @@ public class HelloMonogame : Game
         foreach (var entity in _entities)
             entity.Update(gameTime, _messages);
 
+        _tileMap.Update(gameTime, _messages);
+        
         var player = _entities.First(entity => entity is Character);
         _camera.Position = Vector2.Lerp(_camera.Position, player.Position, 0.05f);
+        
+        var chunkSize = 64;
+        var tileSize = 32;
+
+        var playerChunkX = Math.Floor(player.Position.X / (chunkSize * 32));
+        var playerChunkY = Math.Floor(player.Position.Y / (chunkSize * 32));
+        
+        Console.WriteLine((player.Position, playerChunkX, playerChunkY));
         
         base.Update(gameTime);
     }

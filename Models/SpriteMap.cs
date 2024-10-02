@@ -18,12 +18,12 @@ public class SpriteMap(
     private HelloMonogame _helloMonoGame { get; set; } = helloMonoGame;
     private SpriteBatch _spriteBatch { get; set; } = spriteBatch;
     private Texture2D _texture { get; set; } = null!;
-    private int _tileWidth { get; set; } = tileWidth;
-    private int _tileHeight { get; set; } = tileHeight;
+    public int TileWidth { get; set; } = tileWidth;
+    public int TileHeight { get; set; } = tileHeight;
 
     private Rectangle GetTile(int x, int y)
     {
-        return new Rectangle(x * _tileWidth, y * _tileHeight, _tileWidth, _tileHeight);
+        return new Rectangle(x * TileWidth, y * TileHeight, TileWidth, TileHeight);
     }
 
     private void DrawTile(int x, int y, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
@@ -42,9 +42,9 @@ public class SpriteMap(
     public void DrawTile(int id, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
     {
         // ReSharper disable once PossibleLossOfFraction
-        double rows = _texture.Height / _tileHeight;
+        double rows = _texture.Height / TileHeight;
         // ReSharper disable once PossibleLossOfFraction
-        double columns = _texture.Width / _tileWidth;
+        double columns = _texture.Width / TileWidth;
         
         if (Math.Abs(rows - (int)rows) > 0) throw new Exception("Size of texture is not divisible by tile height");
         if (Math.Abs(columns - (int)columns) > 0) throw new Exception("Size of texture is not divisible by tile width");

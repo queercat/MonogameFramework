@@ -24,16 +24,33 @@ public class Character : Entity
         base.Update(gameTime, messages);
         
         var velocity = new Vector2(0, 0);
-        
+
         if ((bool)messages[MessageType.InputUp])
+        {
             velocity.Y -= 1;
+            _animatedSprite.Play("WalkUp");
+        }
+
         if ((bool)messages[MessageType.InputDown])
+        {
             velocity.Y += 1;
+            _animatedSprite.Play("WalkDown");
+        }
+
         if ((bool)messages[MessageType.InputLeft])
+        {
             velocity.X -= 1;
+            _animatedSprite.Flip();
+            _animatedSprite.Play("WalkRight");
+        }
+
         if ((bool)messages[MessageType.InputRight])
+        {
             velocity.X += 1;
-        
+            _animatedSprite.Unflip();
+            _animatedSprite.Play("WalkRight");
+        }
+
         if (velocity != Vector2.Zero)
             velocity.Normalize();
         

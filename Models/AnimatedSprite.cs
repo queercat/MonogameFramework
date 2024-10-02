@@ -15,7 +15,8 @@ namespace HelloMonogame.Models;
 
 public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, float scale, float rotation, SpriteOptions spriteOptions, AnimatedSpriteOptions animatedSpriteOptions, int tilesWidth = 1, int tilesHeight = 1) : IUpdateable, ILoadable
 {
-    private readonly SpriteMap _spriteMap = animatedSpriteOptions.SpriteMap;
+    public readonly SpriteMap SpriteMap = animatedSpriteOptions.SpriteMap;
+    
     private float _elapsed = 0f;
     private int _frame = 0;
     private bool _playing = animatedSpriteOptions.Playing;
@@ -111,11 +112,11 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
             _spriteOptions = _spriteOptions with { LayerDepth = Depth };
         }
         
-        _spriteMap.DrawTile(frame, position, _rotation, _scale, _spriteOptions, tilesWidth, tilesHeight);
+        SpriteMap.DrawTile(frame, position, _rotation, _scale, _spriteOptions, tilesWidth, tilesHeight);
     }
     
     public void Load()
     {
-        _spriteMap.Load();
+        SpriteMap.Load();
     }
 }

@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using HelloMonogame.Enums;
 using Microsoft.Xna.Framework;
+using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
 namespace HelloMonogame.Models;
 
-public class Tile : IDrawable, ILoadable
+public class Tile : ILoadable, IUpdateable
 {
     public Vector2 Position { get; set; }
     public int Depth { get; set; }
@@ -17,13 +20,19 @@ public class Tile : IDrawable, ILoadable
         _animatedSprite.Depth = depth;
     }
     
-    public virtual void Draw()
+    public virtual void Draw(Vector2? offset)
     {
-        _animatedSprite.Draw(Position);
+        var position = Position + (offset ?? Vector2.Zero) * new Vector2(_animatedSprite.SpriteMap.TileWidth, _animatedSprite.SpriteMap.TileHeight);
+        
+        _animatedSprite.Draw(position);
     }
     
     public virtual void Load()
     {
         _animatedSprite.Load();
+    }
+
+    public virtual void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
+    {
     }
 }
