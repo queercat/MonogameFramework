@@ -17,7 +17,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private float _elapsed = 0f;
     private int _frame = 0;
     private bool _playing = animatedSpriteOptions.Playing;
-    private Dictionary<string, int[]> _animations = animatedSpriteOptions.Animations;
+    private Dictionary<string, AnimationConfig> _animations = animatedSpriteOptions.Animations;
     private readonly float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
     private Vector2 _position = position;
     private string _animationName = "";
@@ -43,7 +43,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _elapsed = 0;
         
         _frame++;
-        _frame %= _animations[_animationName].Length;
+        _frame %= _animations[_animationName].FrameCount;
     }
 
     private void RegisterAnimations(string path)
@@ -55,14 +55,9 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         {
             if (file == "") continue;
             
-            var animation = deserializer.Deserialize<AnimationConfig>(file);
-
-            var frames = new int[animation.FrameCount];
-
-            for (var idx = 0; idx < animation.FrameCount; idx++)
-                frames[idx] = animation.InitialFrame + idx;
+            var animationConfig = deserializer.Deserialize<AnimationConfig>(file);
             
-            _animations[animation.Name] = frames;
+            _animations[animationConfig.Name] = animationConfig;
         }
         
     }
@@ -71,26 +66,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     {
         _position += translation;
     }
-
-    public void AddAnimation(string animationName, int[] frames)
-    {
-        _animations[animationName] = frames;
-    }
-
-    public void AddAnimation(string animationName, int initialFrame, int numberOfFrames)
-    {
-        var frames = new int[numberOfFrames];
-        
-        for (var idx = 0; idx < numberOfFrames; idx++)
-        {
-            frames[idx] = initialFrame + idx;
-        }
-
-        _animations[animationName] = frames;
-    }
     
     public void Play(string animationName)
     {
+        if (animationName == _animationName) return;
+        
+        _frame = 0;
         _animationName = animationName;
         _playing = true;
     }
@@ -120,8 +101,11 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _animations.TryGetValue(_animationName, out var frames);
         
         if (frames is null) throw new NullReferenceException($"Animation {_animationName} doesn't exist!");
+
+        var animationConfig = _animations[_animationName];
+        var frame = animationConfig.InitialFrame + _frame;
         
-        _spriteMap.DrawTile(frames[_frame], _position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
+        _spriteMap.DrawTile(frame, _position, _rotation, _scale, spriteOptions, tilesWidth, tilesHeight);
     }
     
     public void Load()
