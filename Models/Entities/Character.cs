@@ -25,26 +25,26 @@ public class Character : Entity
         
         var velocity = new Vector2(0, 0);
 
-        if ((bool)messages[MessageType.InputUp])
+        if (messages.TryGetValue(MessageType.InputUp, out var inputUp) && (bool)inputUp)
         {
             velocity.Y -= 1;
             _animatedSprite.Play("WalkUp");
         }
 
-        if ((bool)messages[MessageType.InputDown])
+        if (messages.TryGetValue(MessageType.InputDown, out var inputDown) && (bool)inputDown)
         {
             velocity.Y += 1;
             _animatedSprite.Play("WalkDown");
         }
 
-        if ((bool)messages[MessageType.InputLeft])
+        if (messages.TryGetValue(MessageType.InputLeft, out var inputLeft) && (bool)inputLeft)
         {
             velocity.X -= 1;
             _animatedSprite.Flip();
             _animatedSprite.Play("WalkRight");
         }
 
-        if ((bool)messages[MessageType.InputRight])
+        if (messages.TryGetValue(MessageType.InputRight, out var inputRight) && (bool)inputRight)
         {
             velocity.X += 1;
             _animatedSprite.Unflip();

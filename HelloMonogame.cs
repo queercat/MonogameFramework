@@ -20,13 +20,14 @@ public class HelloMonogame : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Camera _camera { get; set; }
-    private TileMap _tileMap { get; set; } = new();
     
     private readonly List<ILoadable> _loadables = [];
     private readonly List<IUpdateable> _updatables = [];
     private readonly List<IDrawable> _drawables = [];
     private readonly List<Entity> _entities = [];
     private Dictionary<MessageType, object> _messages = new();
+
+    private Dictionary<Vector2, Chunk> _chunks = new ();
 
     public HelloMonogame()
     {
@@ -45,12 +46,15 @@ public class HelloMonogame : Game
         systemEntity.AddUpdatable(new InputSystem());
         systemEntity.AddUpdatable(new DebugSystem());
 
-        var sprite = new SpriteMap(this, _spriteBatch, "Sprites/Selector.png", 32, 32);
-
-
-        _entities.Add(systemEntity);
+        var sprite = new SpriteMap(this, _spriteBatch, "Sprites/Selector.png", 16, 16);
+        var animatedSprite = new AnimatedSprite(this, _spriteBatch,"Animations/Grass", new DefaultAnimatedSpriteOptions(sprite));
+        
+        _chunks.Add(new Vector2(0, 0),
+            new Chunk(new Vector2(0, 0), new Dictionary<string, AnimatedSprite> { { "grass", animatedSprite } }));
+        
         _entities.Add(new Character(this, _spriteBatch));
         
+        _entities.Add(systemEntity);
         
         base.Initialize();
     }
@@ -60,7 +64,8 @@ public class HelloMonogame : Game
         foreach (var entity in _entities)
             entity.Load();
         
-        _tileMap.Load();
+        foreach (var chunk in _chunks.Values)
+            chunk.Load();
     }
 
     protected override void Update(GameTime gameTime)
@@ -74,18 +79,8 @@ public class HelloMonogame : Game
         foreach (var entity in _entities)
             entity.Update(gameTime, _messages);
 
-        _tileMap.Update(gameTime, _messages);
-        
         var player = _entities.First(entity => entity is Character);
         _camera.Position = Vector2.Lerp(_camera.Position, player.Position, 0.05f);
-        
-        var chunkSize = 64;
-        var tileSize = 32;
-
-        var playerChunkX = Math.Floor(player.Position.X / (chunkSize * 32));
-        var playerChunkY = Math.Floor(player.Position.Y / (chunkSize * 32));
-        
-        Console.WriteLine((player.Position, playerChunkX, playerChunkY));
         
         base.Update(gameTime);
     }
@@ -97,7 +92,28 @@ public class HelloMonogame : Game
         _spriteBatch.Begin(transformMatrix: _camera.TransformMatrix, samplerState: SamplerState.PointClamp);
         
         _entities.ForEach(entity => entity.Draw());
-        _tileMap.Draw();
+        
+        var player = _entities.First(entity => entity is Character);
+
+        var chunkOffsets = new List<Vector2>();
+        
+        for (var x = -1; x <= 1; x++)
+        {
+            for (var y = -1; y <= 1; y++)
+            {
+                chunkOffsets.Add(new Vector2(x, y));
+            }
+        }
+        
+        chunkOffsets = chunkOffsets.Select(offset => ChunkUtilities.WorldToChunkCoordinate(player.Position) + offset).ToList();
+        
+        foreach (var chunkOffset in chunkOffsets)
+        {
+            var chunk = _chunks.GetValueOrDefault(chunkOffset);
+            
+            chunk?.Draw();
+        }
+        
         
         _spriteBatch.End();
         
