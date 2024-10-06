@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HelloMonogame.Entities;
 using HelloMonogame.Extensions;
 using HelloMonogame.Models;
@@ -44,13 +45,9 @@ public class RandomChunkSystem(HelloMonogame helloMonogame, SpriteBatch spriteBa
         
         var chunkOffsets = ChunkUtilities.GenerateChunkOffsetsFromPlayer(_player);
         
-        foreach (var chunkOffset in chunkOffsets)
+        foreach (var chunkOffset in chunkOffsets.Where(chunkOffset => !_chunks.ContainsKey(chunkOffset)))
         {
-            if (!_chunks.ContainsKey(chunkOffset))
-            {
-                Generate(chunkOffset);
-                Console.WriteLine($"Generating: {chunkOffset}");
-            }
+            Generate(chunkOffset);
         }
     }
 
