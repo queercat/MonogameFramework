@@ -33,14 +33,13 @@ public class DebugSystem(HelloMonogame helloMonogame, SpriteBatch spriteBatch) :
 
         var _player = entities.GetEntity<Character>();
         
-        Console.WriteLine(_player.Position);
     }
 
     private void HandleClick(object? sender, Vector2 position, List<Entity> entities)
     {
-        Console.WriteLine(position);
         var instantiatedConveyorBelt = new ConveyorBelt(_helloMonogame, _spriteBatch, position);
         instantiatedConveyorBelt.Id = entities.Count;
+        instantiatedConveyorBelt.Depth += (float)instantiatedConveyorBelt.Id / 10;
         
         entities.Add(instantiatedConveyorBelt);
     }

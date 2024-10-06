@@ -63,8 +63,11 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
             
             var animationConfig = deserializer.Deserialize<AnimationConfig>(file);
 
-            if (_animationName == "") _animationName = animationConfig.Name;
-            
+            if (_animationName == "")
+            {
+                _animationName = animationConfig.Name;
+                _secondsPerFrame = animationConfig.SecondsPerFrame ?? 1.0f;
+            }
             Animations[animationConfig.Name] = animationConfig;
         }
         
@@ -72,7 +75,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     
     public void Play(string animationName)
     {
-        if (animationName == _animationName) return;
+        if (animationName == _animationName && _playing) return;
         
         _frame = 0;
         _animationName = animationName;

@@ -1,4 +1,5 @@
 ---
 Name: Conveyor
 InitialFrame: 0
-FrameCount: 11
+FrameCount: 16
+SecondsPerFrame: .1
