@@ -1,4 +1,4 @@
-namespace HelloMonogame.Models;
+namespace HelloMonogame.Models.Contracts;
 
 public interface ILoadable
 {

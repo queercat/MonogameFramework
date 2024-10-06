@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HelloMonogame.Models.Entities;
+using HelloMonogame.Entities;
 using Microsoft.Xna.Framework;
 
 namespace HelloMonogame.Utilities;

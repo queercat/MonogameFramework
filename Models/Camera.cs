@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HelloMonogame.Models;
 
-public class Camera(float rotation, float zoom, Vector2 position, Viewport viewport)
+public class Camera(float rotation, float zoom, Vector2 position, Viewport viewport) : Entity
 {
     private Viewport Viewport { get; set; } = viewport;
     public Vector2 Position { get; set; } = position;

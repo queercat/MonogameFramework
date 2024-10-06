@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using HelloMonogame.Entities;
 using HelloMonogame.Extensions;
-using HelloMonogame.Models.Entities;
+using HelloMonogame.Models;
 using HelloMonogame.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HelloMonogame.Models.Systems;
+namespace HelloMonogame.Systems;
 
 public class RandomChunkSystem(HelloMonogame helloMonogame, SpriteBatch spriteBatch, AnimatedSprite validTiles)
     : Entity

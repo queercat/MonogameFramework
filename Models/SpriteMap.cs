@@ -1,4 +1,5 @@
 using System;
+using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Utilities;
 using Microsoft.Xna.Framework;

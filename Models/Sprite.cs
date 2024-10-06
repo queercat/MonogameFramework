@@ -1,8 +1,10 @@
 using System;
+using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using IDrawable = HelloMonogame.Models.Contracts.IDrawable;
 
 namespace HelloMonogame.Models;
 

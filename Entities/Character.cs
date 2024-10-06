@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using HelloMonogame.Enums;
 using HelloMonogame.Extensions;
+using HelloMonogame.Models;
 using HelloMonogame.Models.Options;
-using HelloMonogame.Models.Systems;
+using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HelloMonogame.Models.Entities;
+namespace HelloMonogame.Entities;
 
 public class Character : Entity
 {

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using HelloMonogame.Entities;
 using HelloMonogame.Enums;
 using HelloMonogame.Extensions;
 using HelloMonogame.Models;
 using HelloMonogame.Models.Contracts;
-using HelloMonogame.Models.Entities;
 using HelloMonogame.Models.Options;
-using HelloMonogame.Models.Systems;
+using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using IDrawable = HelloMonogame.Models.IDrawable;
+using IDrawable = HelloMonogame.Models.Contracts.IDrawable;
 using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
 namespace HelloMonogame;
@@ -47,6 +47,8 @@ public class HelloMonogame : Game
         _entities.Add(new InputSystem());
         _entities.Add(new RandomChunkSystem(this, _spriteBatch, new AnimatedSprite(
             this, _spriteBatch, "Animations/Grass", new DefaultAnimatedSpriteOptions(spriteMap))));
+        _entities.Add(new DebugSystem());
+        _entities.Add(_camera);
         
         _entities.Add(systemEntity);
         

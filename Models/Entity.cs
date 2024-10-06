@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using HelloMonogame.Models.Contracts;
 using Microsoft.Xna.Framework;
+using IDrawable = HelloMonogame.Models.Contracts.IDrawable;
 using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
 namespace HelloMonogame.Models;

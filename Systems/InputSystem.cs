@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using HelloMonogame.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
-namespace HelloMonogame.Models.Systems;
+namespace HelloMonogame.Systems;
 
 public class InputSystem : Entity
 {
@@ -12,6 +12,7 @@ public class InputSystem : Entity
     public event EventHandler OnInputDown;
     public event EventHandler OnInputLeft;
     public event EventHandler OnInputRight;
+    public event EventHandler<Vector2> OnMouseClick;
     
     public override void Update(GameTime gameTime, List<Entity> entities)
     {
@@ -26,5 +27,8 @@ public class InputSystem : Entity
         
         if (Keyboard.GetState().IsKeyDown(Keys.D))
             OnInputRight?.Invoke(this, EventArgs.Empty);
+
+        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            OnMouseClick?.Invoke(this, Mouse.GetState().Position.ToVector2());
     }
 }
