@@ -1,6 +1,6 @@
 ---
 Name: WalkDown
-InitialFrame: 12
+InitialFrame: 20 
 FrameCount: 4
 SecondsPerFrame: .4
 ---
@@ -10,6 +10,6 @@ FrameCount: 4
 SecondsPerFrame: .4
 ---
 Name: WalkUp
-InitialFrame: 20
+InitialFrame: 12
 FrameCount: 4
 SecondsPerFrame: .4

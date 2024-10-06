@@ -94,26 +94,25 @@ public class HelloMonogame : Game
         
         _entities.ForEach(entity => entity.Draw());
         
-        var player = _entities.First(entity => entity is Character);
-
-        var chunkOffsets = new List<Vector2>();
-        
-        for (var x = 0; x <= 1; x++)
-        {
-            for (var y = -1; y <= 1; y++)
-            {
-                chunkOffsets.Add(new Vector2(x, y));
-            }
-        }
-        
-        chunkOffsets = chunkOffsets.Select(offset => ChunkUtilities.WorldToChunkCoordinate(player.Position) + offset).ToList();
-        
-        foreach (var chunkOffset in chunkOffsets)
-        {
-            var chunk = _chunks.GetValueOrDefault(chunkOffset);
-            
-            chunk?.Draw();
-        }
+        // var player = _entities.First(entity => entity is Character);
+        // var chunkOffsets = new List<Vector2>();
+        //
+        // for (var x = 0; x <= 1; x++)
+        // {
+        //     for (var y = -1; y <= 1; y++)
+        //     {
+        //         chunkOffsets.Add(new Vector2(x, y));
+        //     }
+        // }
+        //
+        // chunkOffsets = chunkOffsets.Select(offset => ChunkUtilities.WorldToChunkCoordinate(player.Position) + offset).ToList();
+        //
+        // foreach (var chunkOffset in chunkOffsets)
+        // {
+        //     var chunk = _chunks.GetValueOrDefault(chunkOffset);
+        //     
+        //     chunk?.Draw();
+        // }
         
         
         _spriteBatch.End();

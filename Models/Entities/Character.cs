@@ -14,6 +14,8 @@ public class Character : Entity
     public Vector2 Velocity = new Vector2(0, 0);
     private readonly AnimatedSprite _animatedSprite;
     
+    public float Speed = .05f;
+    
     public Character(HelloMonogame helloMonogame, SpriteBatch spriteBatch)
     {
         var spriteMap = new SpriteMap(helloMonogame, spriteBatch, "SpriteSheets/Character.png", 32, 32);
@@ -28,24 +30,31 @@ public class Character : Entity
 
         var inputSystem = entities.GetEntity<InputSystem>();
         
-        inputSystem.OnInputUp += (sender, e) => HandleInput(sender, e, new Vector2(0, -1));
-        inputSystem.OnInputDown += (sender, e) => HandleInput(sender, e, new Vector2(0, 1));
-        inputSystem.OnInputLeft += (sender, e) => HandleInput(sender, e, new Vector2(-1, 0));
-        inputSystem.OnInputRight += (sender, e) => HandleInput(sender, e, new Vector2(1, 0));
+        inputSystem.OnInputUp += (sender, e) => HandleMovement(sender, e, new Vector2(0, -1));
+        inputSystem.OnInputDown += (sender, e) => HandleMovement(sender, e, new Vector2(0, 1));
+        inputSystem.OnInputLeft += (sender, e) => HandleMovement(sender, e, new Vector2(-1, 0));
+        inputSystem.OnInputRight += (sender, e) => HandleMovement(sender, e, new Vector2(1, 0));
     }
 
     public override void Update(GameTime gameTime, List<Entity> entities)
     {
         base.Update(gameTime, entities);
         
-        Position += Velocity;
-        Velocity = Vector2.Lerp(Velocity, Vector2.Zero, 0.1f);
+        Position += Velocity * gameTime.ElapsedGameTime.Milliseconds * Speed;
+        Velocity = Vector2.Lerp(Velocity, Vector2.Zero, 0.7f);
+        
+        if (Velocity != Vector2.Zero) Velocity.Normalize();
+        
+        if (Velocity.Y > 0) _animatedSprite.Play("WalkUp");
+        else if (Velocity.Y < 0) _animatedSprite.Play("WalkDown");
+        
+        else if (Velocity.X > 0) { _animatedSprite.Play("WalkRight"); _animatedSprite.Unflip(); }
+        else if (Velocity.X < 0) { _animatedSprite.Play("WalkRight"); _animatedSprite.Flip(); }
     }
 
-    private void HandleInput(object? sender, EventArgs e, Vector2 direction)
+    private void HandleMovement(object? sender, EventArgs e, Vector2 direction)
     {
         Velocity += direction;
-        Velocity.Normalize();
     }
     
     public override void Draw()
