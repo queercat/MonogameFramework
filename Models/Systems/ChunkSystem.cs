@@ -4,41 +4,33 @@ using HelloMonogame.Extensions;
 using HelloMonogame.Models.Entities;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace HelloMonogame.Models;
 
-public class ChunkSystem(Dictionary<Vector2, Chunk> chunks) : Entity
+public class ChunkSystem(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Dictionary<Vector2, Chunk> chunks) : Entity
 {
-    private Vector2 _playerChunkPosition;
+    private HelloMonogame _helloMonogame = helloMonogame;
+    private SpriteBatch _spriteBatch = spriteBatch;
+    private Character _player;
 
     public override void Update(GameTime gameTime, List<Entity> entities)
     {
         base.Update(gameTime, entities);
 
-        var player = entities.GetEntity<Character>();
-        _playerChunkPosition = ChunkUtilities.WorldToChunkCoordinate(player.Position);
+        _player = entities.GetEntity<Character>();
     }
 
     public override void Draw()
     {
         base.Draw();
         
-        var chunkOffsets = new List<Vector2>();
-        
-        for (var x = 0; x <= 1; x++)
-        {
-            for (var y = -1; y <= 1; y++)
-            {
-                chunkOffsets.Add(new Vector2(x, y));
-            }
-        }
-        
-        chunkOffsets = chunkOffsets.Select(offset => _playerChunkPosition + offset).ToList();
-
-        foreach (var chunkOffset in chunkOffsets)
+        foreach (var chunkOffset in ChunkUtilities.GenerateChunkOffsetsFromPlayer(_player))
         {
             chunks.TryGetValue(chunkOffset, out Chunk? value);
             value?.Draw();
         }
     }
+
+
 }

@@ -46,12 +46,8 @@ public class HelloMonogame : Game
         
         var systemEntity = new Entity();
 
-        var sprite = new SpriteMap(this, _spriteBatch, "SpriteSheets/GrassSprites.png", 16, 16);
-        var animatedSprite = new AnimatedSprite(this, _spriteBatch,"Animations/Grass", new DefaultAnimatedSpriteOptions(sprite));
         
-        _chunks.Add(new Vector2(0, 0), new Chunk(new Vector2(0, 0), animatedSprite, depth: 0));
-        
-        _entities.Add(new ChunkSystem(_chunks));
+        _entities.Add(new ChunkSystem(this, _spriteBatch, _chunks));
         _entities.Add(new Character(this, _spriteBatch));
         _entities.Add(new InputSystem());
         
