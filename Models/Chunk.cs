@@ -48,9 +48,9 @@ public class Chunk : IDrawable, IUpdateable, ILoadable
         }
     }
     
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, List<Entity> entities)
     {
         foreach (var tile in _tiles)
-            tile.Value.Update(gameTime);
+            tile.Value.Update(gameTime, entities);
     }
 }

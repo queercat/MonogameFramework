@@ -32,7 +32,7 @@ public class Tile : ILoadable, IUpdateable
         _animatedSprite.Load();
     }
 
-    public virtual void Update(GameTime gameTime)
+    public virtual void Update(GameTime gameTime, List<Entity> entities)
     {
     }
 }

@@ -36,7 +36,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         RegisterAnimations(Path.Join("Content", animationConfigPath) + ".yaml");
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, List<Entity> entities)
     {
         if (!_playing) return;
         

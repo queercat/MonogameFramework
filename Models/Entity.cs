@@ -14,6 +14,8 @@ public class Entity : ILoadable, IDrawable, IUpdateable
     private readonly List<IUpdateable> _updatables = [];
     private readonly List<ILoadable> _loadables = [];
 
+    private bool _isInitialized = false;
+    
     public void AddUpdatable(IUpdateable updateable)
     {
         _updatables.Add(updateable);
@@ -55,11 +57,22 @@ public class Entity : ILoadable, IDrawable, IUpdateable
         }
     }
 
-    public virtual void Update(GameTime gameTime)
+    public virtual void Update(GameTime gameTime, List<Entity> entities)
     {
+        if (!_isInitialized)
+            Initialize(entities);
+        
         foreach (var updatable in _updatables)
         {
-            updatable.Update(gameTime);
+            updatable.Update(gameTime, entities);
         }
+    }
+
+    public virtual void Initialize(List<Entity> entities)
+    {
+        if (_isInitialized)
+            return;
+        
+        _isInitialized = true;
     }
 }

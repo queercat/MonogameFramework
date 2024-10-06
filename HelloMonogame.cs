@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using HelloMonogame.Enums;
+using HelloMonogame.Extensions;
 using HelloMonogame.Models;
 using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Entities;
 using HelloMonogame.Models.Options;
+using HelloMonogame.Models.Systems;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -40,7 +42,7 @@ public class HelloMonogame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
-        _camera = new Camera(0, .5f, new Vector2(0, 0), GraphicsDevice.Viewport);
+        _camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
         
         var systemEntity = new Entity();
 
@@ -51,6 +53,7 @@ public class HelloMonogame : Game
             new Chunk(new Vector2(0, 0), new Dictionary<string, AnimatedSprite> { { "grass", animatedSprite } }));
         
         _entities.Add(new Character(this, _spriteBatch));
+        _entities.Add(new InputSystem());
         
         _entities.Add(systemEntity);
         
@@ -72,12 +75,12 @@ public class HelloMonogame : Game
             Exit();
 
         foreach (var updatable in _updatables)
-            updatable.Update(gameTime);
+            updatable.Update(gameTime, _entities);
         
         foreach (var entity in _entities)
-            entity.Update(gameTime);
+            entity.Update(gameTime, _entities);
 
-        var player = _entities.First(entity => entity is Character);
+        var player = _entities.GetEntity<Character>();
         _camera.Position = Vector2.Lerp(_camera.Position, player.Position, 0.05f);
         
         base.Update(gameTime);

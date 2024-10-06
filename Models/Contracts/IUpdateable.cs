@@ -6,5 +6,5 @@ namespace HelloMonogame.Models.Contracts;
 
 public interface IUpdateable
 {
-    void Update(GameTime gameTime);
+    void Update(GameTime gameTime, List<Entity> entities);
 }
