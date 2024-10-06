@@ -1,6 +1,6 @@
 using System;
 using HelloMonogame.Models.Options;
-using HelloMonogame.Systems;
+using HelloMonogame.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -57,7 +57,7 @@ public class SpriteMap(
 
     private void LoadTexture()
     {
-        _texture = TextureLoader.LoadTexture(_helloMonoGame.GraphicsDevice, _path);
+        _texture = TextureUtilities.LoadTexture(_helloMonoGame.GraphicsDevice, _path);
     }
 
     public void Load() {

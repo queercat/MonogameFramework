@@ -4,7 +4,7 @@ using System.Linq;
 using HelloMonogame.Models.Entities;
 using Microsoft.Xna.Framework;
 
-namespace HelloMonogame.Systems;
+namespace HelloMonogame.Utilities;
 
 public static class ChunkUtilities
 {

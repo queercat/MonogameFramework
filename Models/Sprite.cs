@@ -1,6 +1,6 @@
 using System;
 using HelloMonogame.Models.Options;
-using HelloMonogame.Systems;
+using HelloMonogame.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -21,7 +21,7 @@ public class Sprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch, Sprite
 
     public void Load()
     {
-        _texture = TextureLoader.LoadTexture(helloMonogame.GraphicsDevice, _path);
+        _texture = TextureUtilities.LoadTexture(helloMonogame.GraphicsDevice, _path);
     }
 
     public void Draw()

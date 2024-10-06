@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using HelloMonogame.Enums;
-using HelloMonogame.Models.Contracts;
 using Microsoft.Xna.Framework;
 using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 

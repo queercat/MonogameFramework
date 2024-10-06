@@ -8,7 +8,6 @@ using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Entities;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Models.Systems;
-using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

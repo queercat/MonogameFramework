@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace HelloMonogame.Systems;
+namespace HelloMonogame.Utilities;
 
-public static class TextureLoader
+public static class TextureUtilities
 {
     public static Texture2D LoadTexture(GraphicsDevice graphicsDevice, string path)
     {
