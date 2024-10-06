@@ -130,4 +130,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     {
         SpriteMap.Load();
     }
+
+    public void DrawDebugInformation(Vector2 position, Vector2 debugPosition, string debugText = "")
+    {
+        var font = helloMonogame.Content.Load<SpriteFont>("Arial");
+        var text = debugText;
+        
+        spriteBatch.DrawString(font, text, debugPosition - new Vector2(8, 8), Color.Black);
+    }
 }

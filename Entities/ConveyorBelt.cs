@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using HelloMonogame.Extensions;
 using HelloMonogame.Models;
 using HelloMonogame.Models.Configs;
+using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Utilities;
 using Microsoft.Xna.Framework;
@@ -37,9 +40,10 @@ public class ConveyorBelt : Entity
 
         var entitiesOnMe = entities.Where(e =>
         {
+            if (e is not IMovable) return false;
             if (e == this) return false;
             
-            var sourceX = e.Position.X;
+            var sourceX = e.Position.X + 8;
             var sourceY = e.Position.Y;
 
             var targetX = Position.X;
@@ -47,15 +51,7 @@ public class ConveyorBelt : Entity
 
             var size = 16;
 
-            if (sourceX >= targetX && sourceX <= targetX + size)
-            {
-                if (sourceY >= targetY && sourceY <= targetY + size)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return sourceX >= targetX && sourceX <= targetX + size && sourceY >= targetY && sourceY <= targetY + size;
         }).ToList();
         
         foreach (var entity in entitiesOnMe)

@@ -22,11 +22,14 @@ public class Tile : Entity {
             _animatedSprite.SwitchAnimation(animation);
     }
     
-    public void Draw(Vector2? offset)
+    public void Draw(Vector2? offset, string debugInformation = "")
     {
         var position = Position + (offset ?? Vector2.Zero) * new Vector2(_animatedSprite.SpriteMap.TileWidth, _animatedSprite.SpriteMap.TileHeight);
         
         _animatedSprite.Draw(position);
+        
+        if (debugInformation.Length > 0)
+            _animatedSprite.DrawDebugInformation(position, position, debugInformation);
     }
     
     public override void Load()

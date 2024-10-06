@@ -48,7 +48,7 @@ public class Chunk : Entity
         
         foreach (var tile in _tiles)
         {
-            tile.Value.Draw(Position);
+            tile.Value.Draw(Position, $"{tile.Key.X}\n{tile.Key.Y}");
         }
     }
     

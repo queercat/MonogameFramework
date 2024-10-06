@@ -9,6 +9,8 @@ namespace HelloMonogame.Systems;
 
 public class InputSystem : Entity
 {
+    private bool isPressed = false;
+    
     public event EventHandler OnInputUp;
     public event EventHandler OnInputDown;
     public event EventHandler OnInputLeft;
@@ -29,11 +31,15 @@ public class InputSystem : Entity
         if (Keyboard.GetState().IsKeyDown(Keys.D))
             OnInputRight?.Invoke(this, EventArgs.Empty);
 
-        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+        if (Mouse.GetState().LeftButton == ButtonState.Pressed && !isPressed)
         {
             var camera = entities.GetEntity<Camera>();
             var invertedMatrix = Matrix.Invert(camera.TransformMatrix);
             OnMouseClick?.Invoke(this, Vector2.Transform(Mouse.GetState().Position.ToVector2(), invertedMatrix));
+            isPressed = true;
         }
+        
+        if (isPressed && Mouse.GetState().LeftButton == ButtonState.Released)
+            isPressed = false;
     }
 }

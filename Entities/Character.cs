@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HelloMonogame.Extensions;
 using HelloMonogame.Models;
+using HelloMonogame.Models.Contracts;
 using HelloMonogame.Models.Options;
 using HelloMonogame.Systems;
 using Microsoft.Xna.Framework;
@@ -9,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HelloMonogame.Entities;
 
-public class Character : Entity
+public class Character : Entity, IMovable
 {
     public Vector2 Velocity = new Vector2(0, 0);
     private readonly AnimatedSprite _animatedSprite;
