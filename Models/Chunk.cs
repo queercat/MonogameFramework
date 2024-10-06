@@ -7,49 +7,51 @@ using IUpdateable = HelloMonogame.Models.Contracts.IUpdateable;
 
 namespace HelloMonogame.Models;
 
-public class Chunk : IDrawable, IUpdateable, ILoadable
+public class Chunk : Entity
 {
-    public Vector2 Position;
-    public Dictionary<string, AnimatedSprite> AnimatedSprites;
     private readonly Dictionary<Vector2, Tile> _tiles = new();
 
     private const int Seed = 1;
     private const int Size = 16;
 
-    public Chunk(Vector2 position, Dictionary<string, AnimatedSprite> animatedSprites)
+    public Chunk(Vector2 position, Dictionary<string, AnimatedSprite> animatedSprites, float depth = 0)
     {
         Position = position;
-        AnimatedSprites = animatedSprites;
 
         for (var idx = 0; idx < Size; idx++)
         {
             for (var idy = 0; idy < Size; idy++)
             {
-                var animatedSprite = AnimatedSprites.Values.First();
+                var animatedSprite = animatedSprites.Values.First();
                 
                 _tiles.Add(new Vector2(idx, idy), new Tile(
-                    new Vector2(idx * animatedSprite.SpriteMap.TileWidth, idy * animatedSprite.SpriteMap.TileHeight), animatedSprite));
+                    new Vector2(idx * animatedSprite.SpriteMap.TileWidth, idy * animatedSprite.SpriteMap.TileHeight), animatedSprite, depth));
             }
         }
-        
     }
     
-    public virtual void Load()
+    public override void Load()
     {
+        base.Load();
+        
         foreach (var tile in _tiles)
             tile.Value.Load();
     }
     
-    public void Draw()
+    public override void Draw()
     {
+        base.Draw();
+        
         foreach (var tile in _tiles)
         {
             tile.Value.Draw(Position);
         }
     }
     
-    public void Update(GameTime gameTime, List<Entity> entities)
+    public override void Update(GameTime gameTime, List<Entity> entities)
     {
+        base.Update(gameTime, entities);
+        
         foreach (var tile in _tiles)
             tile.Value.Update(gameTime, entities);
     }

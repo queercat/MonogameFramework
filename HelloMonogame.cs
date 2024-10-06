@@ -50,8 +50,9 @@ public class HelloMonogame : Game
         var animatedSprite = new AnimatedSprite(this, _spriteBatch,"Animations/Grass", new DefaultAnimatedSpriteOptions(sprite));
         
         _chunks.Add(new Vector2(0, 0),
-            new Chunk(new Vector2(0, 0), new Dictionary<string, AnimatedSprite> { { "grass", animatedSprite } }));
+            new Chunk(new Vector2(0, 0), new Dictionary<string, AnimatedSprite> { { "grass", animatedSprite } }, depth: 0));
         
+        _entities.Add(new ChunkSystem(_chunks));
         _entities.Add(new Character(this, _spriteBatch));
         _entities.Add(new InputSystem());
         
@@ -91,28 +92,9 @@ public class HelloMonogame : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
        
         _spriteBatch.Begin(transformMatrix: _camera.TransformMatrix, samplerState: SamplerState.PointClamp);
-        
+
+        _entities.Sort((a, b) => a.Depth.CompareTo(b.Depth));
         _entities.ForEach(entity => entity.Draw());
-        
-        // var player = _entities.First(entity => entity is Character);
-        // var chunkOffsets = new List<Vector2>();
-        //
-        // for (var x = 0; x <= 1; x++)
-        // {
-        //     for (var y = -1; y <= 1; y++)
-        //     {
-        //         chunkOffsets.Add(new Vector2(x, y));
-        //     }
-        // }
-        //
-        // chunkOffsets = chunkOffsets.Select(offset => ChunkUtilities.WorldToChunkCoordinate(player.Position) + offset).ToList();
-        //
-        // foreach (var chunkOffset in chunkOffsets)
-        // {
-        //     var chunk = _chunks.GetValueOrDefault(chunkOffset);
-        //     
-        //     chunk?.Draw();
-        // }
         
         
         _spriteBatch.End();

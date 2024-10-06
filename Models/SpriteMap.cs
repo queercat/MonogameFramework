@@ -36,7 +36,7 @@ public class SpriteMap(
         // TODO: Make this a mapping of percentages from spriteOptions.
         var origin = sourceRectangle.Size.ToVector2() / 2;
         
-        _spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, rotation, origin, scale, spriteOptions.SpriteEffects, spriteOptions.LayerDepth);
+        _spriteBatch.Draw(_texture, position, sourceRectangle, Color.White, rotation, origin, scale, spriteOptions.SpriteEffects, 0);
     }
 
     public void DrawTile(int id, Vector2 position, float rotation, float scale, SpriteOptions spriteOptions, int tilesWidth = 1, int tilesHeight = 1)
