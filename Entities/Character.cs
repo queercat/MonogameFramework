@@ -50,10 +50,7 @@ public class Character : Entity
         else if (Velocity.X > 0) { _animatedSprite.Play("WalkRight"); _animatedSprite.Unflip(); }
         else if (Velocity.X < 0) { _animatedSprite.Play("WalkRight"); _animatedSprite.Flip(); }
         
-        
         Velocity = Vector2.Zero;
-        
-        
     }
 
     private void HandleMovement(object? sender, EventArgs e, Vector2 direction)
