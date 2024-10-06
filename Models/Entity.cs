@@ -10,6 +10,7 @@ public class Entity : ILoadable, IDrawable, IUpdateable
 {
     public Vector2 Position { get; set; }
     public float Depth { get; set; } = 0.0f;
+    public int Id = -1;
 
     private readonly List<IDrawable> _drawables = [];
     private readonly List<IUpdateable> _updatables = [];

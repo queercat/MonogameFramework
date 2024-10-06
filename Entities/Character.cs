@@ -21,7 +21,7 @@ public class Character : Entity
         var spriteMap = new SpriteMap(helloMonogame, spriteBatch, "SpriteSheets/Deer.png", 32, 32);
         _animatedSprite = new AnimatedSprite(helloMonogame, spriteBatch, "Animations/Character", new DefaultAnimatedSpriteOptions(spriteMap));
 
-        Depth = 1.0f;
+        Depth = 2.0f;
         
         Add(_animatedSprite);
     }

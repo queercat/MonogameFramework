@@ -23,7 +23,7 @@ public class HelloMonogame : Game
     private Camera _camera { get; set; }
     
     private readonly List<IUpdateable> _updatables = [];
-    private readonly List<Entity> _entities = [];
+    private List<Entity> _entities = [];
     private Dictionary<MessageType, object> _messages = new();
 
     public HelloMonogame()
@@ -47,7 +47,7 @@ public class HelloMonogame : Game
         _entities.Add(new InputSystem());
         _entities.Add(new RandomChunkSystem(this, _spriteBatch, new AnimatedSprite(
             this, _spriteBatch, "Animations/Grass", new DefaultAnimatedSpriteOptions(spriteMap))));
-        _entities.Add(new DebugSystem());
+        _entities.Add(new DebugSystem(this, _spriteBatch));
         _entities.Add(_camera);
         
         _entities.Add(systemEntity);
@@ -68,9 +68,11 @@ public class HelloMonogame : Game
 
         foreach (var updatable in _updatables)
             updatable.Update(gameTime, _entities);
-        
-        foreach (var entity in _entities)
+
+        for (var idx = 0; idx < _entities.Count; ++idx) {
+            var entity = _entities[idx];
             entity.Update(gameTime, _entities);
+        }
 
         var player = _entities.GetEntity<Character>();
         _camera.Position = Vector2.Lerp(_camera.Position, player.Position, 0.05f);

@@ -1,16 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using HelloMonogame.Entities;
 using HelloMonogame.Extensions;
 using HelloMonogame.Models;
 using HelloMonogame.Utilities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace HelloMonogame.Systems;
 
-public class DebugSystem : Entity
+public class DebugSystem(HelloMonogame helloMonogame, SpriteBatch spriteBatch) : Entity
 {
     private Camera _camera = null!;
     
+    private HelloMonogame _helloMonogame = helloMonogame;
+    private SpriteBatch _spriteBatch = spriteBatch;
+
     public override void Initialize(List<Entity> entities)
     {
         base.Initialize(entities);
@@ -18,11 +24,24 @@ public class DebugSystem : Entity
         _camera = entities.GetEntity<Camera>();
         var inputSystem = entities.GetEntity<InputSystem>();
 
-        inputSystem.OnMouseClick += HandleClick;
+        inputSystem.OnMouseClick += (sender, vector2) => { HandleClick(sender, vector2, entities); };
     }
 
-    private void HandleClick(object? sender, Vector2 position)
+    public override void Update(GameTime gameTime, List<Entity> entities)
     {
-        Console.WriteLine(WorldUtilities.ScreenToWorldCoordinates(position + _camera.Position));
+        base.Update(gameTime, entities);
+
+        var _player = entities.GetEntity<Character>();
+        
+        Console.WriteLine(_player.Position);
+    }
+
+    private void HandleClick(object? sender, Vector2 position, List<Entity> entities)
+    {
+        Console.WriteLine(position);
+        var instantiatedConveyorBelt = new ConveyorBelt(_helloMonogame, _spriteBatch, position);
+        instantiatedConveyorBelt.Id = entities.Count;
+        
+        entities.Add(instantiatedConveyorBelt);
     }
 }

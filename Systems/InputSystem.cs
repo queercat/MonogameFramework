@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HelloMonogame.Extensions;
 using HelloMonogame.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -29,6 +30,10 @@ public class InputSystem : Entity
             OnInputRight?.Invoke(this, EventArgs.Empty);
 
         if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            OnMouseClick?.Invoke(this, Mouse.GetState().Position.ToVector2());
+        {
+            var camera = entities.GetEntity<Camera>();
+            var invertedMatrix = Matrix.Invert(camera.TransformMatrix);
+            OnMouseClick?.Invoke(this, Vector2.Transform(Mouse.GetState().Position.ToVector2(), invertedMatrix));
+        }
     }
 }
