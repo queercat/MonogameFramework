@@ -1,4 +1,12 @@
 ---
-Name: Grass
+Name: Grass0
 InitialFrame: 0
+FrameCount: 1
+---
+Name: Grass1
+InitialFrame: 1
+FrameCount: 1
+---
+Name: Rock0
+InitialFrame: 2
 FrameCount: 1

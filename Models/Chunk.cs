@@ -14,7 +14,7 @@ public class Chunk : Entity
     private const int Seed = 1;
     private const int Size = 16;
 
-    public Chunk(Vector2 position, Dictionary<string, AnimatedSprite> animatedSprites, float depth = 0)
+    public Chunk(Vector2 position, AnimatedSprite validTiles, float depth = 0)
     {
         Position = position;
 
@@ -22,10 +22,14 @@ public class Chunk : Entity
         {
             for (var idy = 0; idy < Size; idy++)
             {
-                var animatedSprite = animatedSprites.Values.First();
+                var animationNames = validTiles.Animations.Keys.ToList();
+                
+                var random = new Random();
+                
+                var animation = animationNames[random.Next(animationNames.Count)];
                 
                 _tiles.Add(new Vector2(idx, idy), new Tile(
-                    new Vector2(idx * animatedSprite.SpriteMap.TileWidth, idy * animatedSprite.SpriteMap.TileHeight), animatedSprite, depth));
+                    new Vector2(idx * validTiles.SpriteMap.TileWidth, idy * validTiles.SpriteMap.TileHeight), validTiles.Clone(), depth, animation));
             }
         }
     }

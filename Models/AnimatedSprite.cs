@@ -20,7 +20,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     private float _elapsed = 0f;
     private int _frame = 0;
     private bool _playing = animatedSpriteOptions.Playing;
-    private Dictionary<string, AnimationConfig> _animations = animatedSpriteOptions.Animations;
+    public readonly Dictionary<string, AnimationConfig> Animations = animatedSpriteOptions.Animations;
     private float _secondsPerFrame = animatedSpriteOptions.SecondsPerFrame;
     private string _animationName = "";
     private float _rotation = rotation;
@@ -35,6 +35,8 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
     {
         RegisterAnimations(Path.Join("Content", animationConfigPath) + ".yaml");
     }
+    
+    public AnimatedSprite Clone() => new AnimatedSprite(helloMonogame, spriteBatch, _scale, _rotation, _spriteOptions, new AnimatedSpriteOptions(SpriteMap, _secondsPerFrame, _playing, Animations), tilesWidth, tilesHeight);
 
     public void Update(GameTime gameTime, List<Entity> entities)
     {
@@ -47,7 +49,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _elapsed = 0;
         
         _frame++;
-        _frame %= _animations[_animationName].FrameCount;
+        _frame %= Animations[_animationName].FrameCount;
     }
 
     private void RegisterAnimations(string path)
@@ -63,7 +65,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
 
             if (_animationName == "") _animationName = animationConfig.Name;
             
-            _animations[animationConfig.Name] = animationConfig;
+            Animations[animationConfig.Name] = animationConfig;
         }
         
     }
@@ -75,7 +77,7 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _frame = 0;
         _animationName = animationName;
         _playing = true;
-        _secondsPerFrame = _animations[_animationName].SecondsPerFrame ?? 1.0f;
+        _secondsPerFrame = Animations[_animationName].SecondsPerFrame ?? 1.0f;
     }
 
     public void Flip()
@@ -93,6 +95,12 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
         _playing = true;
     }
 
+    public void SwitchAnimation(string animationName)
+    {
+        _frame = 0;
+        _animationName = animationName;
+    }
+
     public void Stop()
     {
         _playing = false;
@@ -100,11 +108,11 @@ public class AnimatedSprite(HelloMonogame helloMonogame, SpriteBatch spriteBatch
 
     public void Draw(Vector2 position)
     {
-        _animations.TryGetValue(_animationName, out var frames);
+        Animations.TryGetValue(_animationName, out var frames);
         
         if (frames is null) throw new NullReferenceException($"Animation {_animationName} doesn't exist!");
 
-        var animationConfig = _animations[_animationName];
+        var animationConfig = Animations[_animationName];
         var frame = animationConfig.InitialFrame + _frame;
         
         if (Math.Abs(_spriteOptions.LayerDepth - Depth) > 0)

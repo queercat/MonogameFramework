@@ -8,13 +8,18 @@ namespace HelloMonogame.Models;
 public class Tile : Entity {
     private readonly AnimatedSprite _animatedSprite;
     
-    public Tile(Vector2 position, AnimatedSprite animatedSprite, float depth = 0)
+    public Tile(Vector2 position, AnimatedSprite animatedSprite, float depth = 0, string? animation = null)
     {
         Position = position;
         Depth = depth;
         
         _animatedSprite = animatedSprite;
         _animatedSprite.Depth = Depth;
+        
+        _animatedSprite.Stop();
+        
+        if (animation != null)
+            _animatedSprite.SwitchAnimation(animation);
     }
     
     public void Draw(Vector2? offset)
