@@ -23,13 +23,9 @@ public class HelloMonogame : Game
     private SpriteBatch _spriteBatch;
     private Camera _camera { get; set; }
     
-    private readonly List<ILoadable> _loadables = [];
     private readonly List<IUpdateable> _updatables = [];
-    private readonly List<IDrawable> _drawables = [];
     private readonly List<Entity> _entities = [];
     private Dictionary<MessageType, object> _messages = new();
-
-    private Dictionary<Vector2, Chunk> _chunks = new ();
 
     public HelloMonogame()
     {
@@ -46,10 +42,12 @@ public class HelloMonogame : Game
         
         var systemEntity = new Entity();
 
+        var spriteMap = new SpriteMap(this, _spriteBatch, "SpriteSheets/GrassSprites.png", 16, 16);
         
-        _entities.Add(new ChunkSystem(this, _spriteBatch, _chunks));
         _entities.Add(new Character(this, _spriteBatch));
         _entities.Add(new InputSystem());
+        _entities.Add(new RandomChunkSystem(this, _spriteBatch, new AnimatedSprite(
+            this, _spriteBatch, "Animations/Grass", new DefaultAnimatedSpriteOptions(spriteMap))));
         
         _entities.Add(systemEntity);
         
@@ -60,9 +58,6 @@ public class HelloMonogame : Game
     {
         foreach (var entity in _entities)
             entity.Load();
-        
-        foreach (var chunk in _chunks.Values)
-            chunk.Load();
     }
 
     protected override void Update(GameTime gameTime)
@@ -90,7 +85,6 @@ public class HelloMonogame : Game
 
         _entities.Sort((a, b) => a.Depth.CompareTo(b.Depth));
         _entities.ForEach(entity => entity.Draw());
-        
         
         _spriteBatch.End();
         
