@@ -18,7 +18,7 @@ public class Character : Entity
     
     public Character(HelloMonogame helloMonogame, SpriteBatch spriteBatch)
     {
-        var spriteMap = new SpriteMap(helloMonogame, spriteBatch, "SpriteSheets/Character.png", 32, 32);
+        var spriteMap = new SpriteMap(helloMonogame, spriteBatch, "SpriteSheets/Deer.png", 32, 32);
         _animatedSprite = new AnimatedSprite(helloMonogame, spriteBatch, "Animations/Character", new DefaultAnimatedSpriteOptions(spriteMap));
 
         Depth = 1.0f;
@@ -46,10 +46,9 @@ public class Character : Entity
         
         Position += Velocity * gameTime.ElapsedGameTime.Milliseconds * Speed;
         
-        if (Velocity.X > 0) { _animatedSprite.Play("WalkRight"); _animatedSprite.Unflip(); }
+        if (Math.Abs(Velocity.X) <= .2) { _animatedSprite.Play("Idle");}
+        else if (Velocity.X > 0) { _animatedSprite.Play("WalkRight"); _animatedSprite.Unflip(); }
         else if (Velocity.X < 0) { _animatedSprite.Play("WalkRight"); _animatedSprite.Flip(); }
-        else if (Velocity.Y > 0) _animatedSprite.Play("WalkUp");
-        else if (Velocity.Y < 0) _animatedSprite.Play("WalkDown");
         
         
         Velocity = Vector2.Zero;

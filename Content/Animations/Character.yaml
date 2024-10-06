@@ -1,15 +1,10 @@
 ---
-Name: WalkDown
-InitialFrame: 20 
+Name: Idle
+InitialFrame: 0 
 FrameCount: 4
-SecondsPerFrame: .4
+SecondsPerFrame: .6
 ---
 Name: WalkRight
-InitialFrame: 16
+InitialFrame: 4
 FrameCount: 4
-SecondsPerFrame: .4
----
-Name: WalkUp
-InitialFrame: 12
-FrameCount: 4
-SecondsPerFrame: .4
+SecondsPerFrame: .2
