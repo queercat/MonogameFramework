@@ -6,5 +6,5 @@ namespace HelloMonogame.Models.Contracts;
 
 public interface IUpdateable
 {
-    void Update(GameTime gameTime, Dictionary<MessageType, object> messages);
+    void Update(GameTime gameTime);
 }

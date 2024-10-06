@@ -40,11 +40,9 @@ public class HelloMonogame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
-        _camera = new Camera(0, 4, new Vector2(0, 0), GraphicsDevice.Viewport);
+        _camera = new Camera(0, .5f, new Vector2(0, 0), GraphicsDevice.Viewport);
         
         var systemEntity = new Entity();
-        systemEntity.AddUpdatable(new InputSystem());
-        systemEntity.AddUpdatable(new DebugSystem());
 
         var sprite = new SpriteMap(this, _spriteBatch, "Sprites/Selector.png", 16, 16);
         var animatedSprite = new AnimatedSprite(this, _spriteBatch,"Animations/Grass", new DefaultAnimatedSpriteOptions(sprite));
@@ -74,10 +72,10 @@ public class HelloMonogame : Game
             Exit();
 
         foreach (var updatable in _updatables)
-            updatable.Update(gameTime, _messages);
+            updatable.Update(gameTime);
         
         foreach (var entity in _entities)
-            entity.Update(gameTime, _messages);
+            entity.Update(gameTime);
 
         var player = _entities.First(entity => entity is Character);
         _camera.Position = Vector2.Lerp(_camera.Position, player.Position, 0.05f);
@@ -97,7 +95,7 @@ public class HelloMonogame : Game
 
         var chunkOffsets = new List<Vector2>();
         
-        for (var x = -1; x <= 1; x++)
+        for (var x = 0; x <= 1; x++)
         {
             for (var y = -1; y <= 1; y++)
             {

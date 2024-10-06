@@ -19,42 +19,9 @@ public class Character : Entity
         Add(_animatedSprite);
     }
 
-    public override void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
+    public override void Update(GameTime gameTime)
     {
-        base.Update(gameTime, messages);
-        
-        var velocity = new Vector2(0, 0);
-
-        if (messages.TryGetValue(MessageType.InputUp, out var inputUp) && (bool)inputUp)
-        {
-            velocity.Y -= 1;
-            _animatedSprite.Play("WalkUp");
-        }
-
-        if (messages.TryGetValue(MessageType.InputDown, out var inputDown) && (bool)inputDown)
-        {
-            velocity.Y += 1;
-            _animatedSprite.Play("WalkDown");
-        }
-
-        if (messages.TryGetValue(MessageType.InputLeft, out var inputLeft) && (bool)inputLeft)
-        {
-            velocity.X -= 1;
-            _animatedSprite.Flip();
-            _animatedSprite.Play("WalkRight");
-        }
-
-        if (messages.TryGetValue(MessageType.InputRight, out var inputRight) && (bool)inputRight)
-        {
-            velocity.X += 1;
-            _animatedSprite.Unflip();
-            _animatedSprite.Play("WalkRight");
-        }
-
-        if (velocity != Vector2.Zero)
-            velocity.Normalize();
-        
-        Position += velocity * 2;
+        base.Update(gameTime);
     }
     
     public override void Draw()

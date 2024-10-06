@@ -48,9 +48,9 @@ public class Chunk : IDrawable, IUpdateable, ILoadable
         }
     }
     
-    public void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
+    public void Update(GameTime gameTime)
     {
         foreach (var tile in _tiles)
-            tile.Value.Update(gameTime, messages);
+            tile.Value.Update(gameTime);
     }
 }

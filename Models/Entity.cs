@@ -55,11 +55,11 @@ public class Entity : ILoadable, IDrawable, IUpdateable
         }
     }
 
-    public virtual void Update(GameTime gameTime, Dictionary<MessageType, object> messages)
+    public virtual void Update(GameTime gameTime)
     {
         foreach (var updatable in _updatables)
         {
-            updatable.Update(gameTime, messages);
+            updatable.Update(gameTime);
         }
     }
 }
